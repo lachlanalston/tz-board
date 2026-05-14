@@ -722,9 +722,10 @@
         <label for="fLabel">Label</label>
         <input type="text" id="fLabel" placeholder="e.g. Client HQ, New York…" autocomplete="off">
       </div>
-      <div class="field">
-        <label for="fTz">Timezone</label>
-        <select id="fTz"></select>
+      <div class="field" style="flex:2">
+        <label for="fTzSearch">Timezone</label>
+        <input type="text" id="fTzSearch" placeholder="Search cities or regions…" autocomplete="off">
+        <select id="fTz" style="margin-top:4px"></select>
       </div>
       <button class="btn btn-primary" onclick="addClock()" style="margin-top:auto">+ Add</button>
     </div>
@@ -772,23 +773,151 @@
    PRESETS
 ───────────────────────────────────────── */
 const PRESETS = [
-  { label: 'Local Time',   tz: 'local',                zone: 'Local browser time'         },
-  { label: 'New York',     tz: 'America/New_York',      zone: 'Eastern Time (ET)'          },
-  { label: 'Chicago',      tz: 'America/Chicago',       zone: 'Central Time (CT)'          },
-  { label: 'Denver',       tz: 'America/Denver',        zone: 'Mountain Time (MT)'         },
-  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'          },
-  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'          },
-  { label: 'London',       tz: 'Europe/London',         zone: 'GMT / BST'                  },
-  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      zone: 'Central European Time'      },
-  { label: 'Dubai',        tz: 'Asia/Dubai',            zone: 'Gulf Standard Time (GST)'   },
-  { label: 'Mumbai',       tz: 'Asia/Kolkata',          zone: 'India Standard Time (IST)'  },
-  { label: 'Singapore',    tz: 'Asia/Singapore',        zone: 'Singapore Time (SGT)'       },
-  { label: 'Tokyo',        tz: 'Asia/Tokyo',            zone: 'Japan Standard Time (JST)'  },
-  { label: 'Sydney',       tz: 'Australia/Sydney',      zone: 'Australian Eastern Time'    },
-  { label: 'Melbourne',    tz: 'Australia/Melbourne',   zone: 'Australian Eastern Time'    },
-  { label: 'Perth',        tz: 'Australia/Perth',       zone: 'Australian Western Time'    },
-  { label: 'Auckland',     tz: 'Pacific/Auckland',      zone: 'New Zealand Time'           },
+  // ── Local ─────────────────────────────────────────────────
+  { label: 'Local Time',       tz: 'local',                           zone: 'Local browser time',              region: 'Local'       },
+  // ── Americas ──────────────────────────────────────────────
+  { label: 'New York',         tz: 'America/New_York',                zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Miami',            tz: 'America/New_York',                zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Boston',           tz: 'America/New_York',                zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Atlanta',          tz: 'America/New_York',                zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Washington DC',    tz: 'America/New_York',                zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Detroit',          tz: 'America/Detroit',                 zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Toronto',          tz: 'America/Toronto',                 zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Montreal',         tz: 'America/Toronto',                 zone: 'Eastern Time (ET)',               region: 'Americas'    },
+  { label: 'Chicago',          tz: 'America/Chicago',                 zone: 'Central Time (CT)',               region: 'Americas'    },
+  { label: 'Dallas',           tz: 'America/Chicago',                 zone: 'Central Time (CT)',               region: 'Americas'    },
+  { label: 'Houston',          tz: 'America/Chicago',                 zone: 'Central Time (CT)',               region: 'Americas'    },
+  { label: 'Minneapolis',      tz: 'America/Chicago',                 zone: 'Central Time (CT)',               region: 'Americas'    },
+  { label: 'Winnipeg',         tz: 'America/Winnipeg',                zone: 'Central Time (CT)',               region: 'Americas'    },
+  { label: 'Denver',           tz: 'America/Denver',                  zone: 'Mountain Time (MT)',              region: 'Americas'    },
+  { label: 'Salt Lake City',   tz: 'America/Denver',                  zone: 'Mountain Time (MT)',              region: 'Americas'    },
+  { label: 'Calgary',          tz: 'America/Edmonton',                zone: 'Mountain Time (MT)',              region: 'Americas'    },
+  { label: 'Phoenix',          tz: 'America/Phoenix',                 zone: 'Mountain Standard Time (MST)',    region: 'Americas'    },
+  { label: 'Los Angeles',      tz: 'America/Los_Angeles',             zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'Las Vegas',        tz: 'America/Los_Angeles',             zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'Seattle',          tz: 'America/Los_Angeles',             zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'San Francisco',    tz: 'America/Los_Angeles',             zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'Portland',         tz: 'America/Los_Angeles',             zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'Vancouver',        tz: 'America/Vancouver',               zone: 'Pacific Time (PT)',               region: 'Americas'    },
+  { label: 'Anchorage',        tz: 'America/Anchorage',               zone: 'Alaska Time (AKT)',               region: 'Americas'    },
+  { label: 'Honolulu',         tz: 'Pacific/Honolulu',                zone: 'Hawaii Time (HST)',               region: 'Americas'    },
+  { label: 'Mexico City',      tz: 'America/Mexico_City',             zone: 'Central Standard Time',           region: 'Americas'    },
+  { label: 'Guadalajara',      tz: 'America/Mexico_City',             zone: 'Central Standard Time',           region: 'Americas'    },
+  { label: 'Bogotá',           tz: 'America/Bogota',                  zone: 'Colombia Time (COT)',             region: 'Americas'    },
+  { label: 'Lima',             tz: 'America/Lima',                    zone: 'Peru Time (PET)',                 region: 'Americas'    },
+  { label: 'Santiago',         tz: 'America/Santiago',                zone: 'Chile Time (CLT)',                region: 'Americas'    },
+  { label: 'São Paulo',        tz: 'America/Sao_Paulo',               zone: 'Brasília Time (BRT)',             region: 'Americas'    },
+  { label: 'Rio de Janeiro',   tz: 'America/Sao_Paulo',               zone: 'Brasília Time (BRT)',             region: 'Americas'    },
+  { label: 'Buenos Aires',     tz: 'America/Argentina/Buenos_Aires',  zone: 'Argentina Time (ART)',            region: 'Americas'    },
+  { label: 'Caracas',          tz: 'America/Caracas',                 zone: 'Venezuela Time (VET)',            region: 'Americas'    },
+  { label: 'Havana',           tz: 'America/Havana',                  zone: 'Cuba Time (CST)',                 region: 'Americas'    },
+  // ── Europe ────────────────────────────────────────────────
+  { label: 'London',           tz: 'Europe/London',                   zone: 'GMT / BST',                       region: 'Europe'      },
+  { label: 'Dublin',           tz: 'Europe/Dublin',                   zone: 'GMT / IST',                       region: 'Europe'      },
+  { label: 'Lisbon',           tz: 'Europe/Lisbon',                   zone: 'WET / WEST',                      region: 'Europe'      },
+  { label: 'Paris',            tz: 'Europe/Paris',                    zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Madrid',           tz: 'Europe/Madrid',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Barcelona',        tz: 'Europe/Madrid',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Amsterdam',        tz: 'Europe/Amsterdam',                zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Brussels',         tz: 'Europe/Brussels',                 zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Berlin',           tz: 'Europe/Berlin',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Frankfurt',        tz: 'Europe/Berlin',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Hamburg',          tz: 'Europe/Berlin',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Zürich',           tz: 'Europe/Zurich',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Geneva',           tz: 'Europe/Zurich',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Milan',            tz: 'Europe/Rome',                     zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Rome',             tz: 'Europe/Rome',                     zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Stockholm',        tz: 'Europe/Stockholm',                zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Copenhagen',       tz: 'Europe/Copenhagen',               zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Oslo',             tz: 'Europe/Oslo',                     zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Helsinki',         tz: 'Europe/Helsinki',                 zone: 'Eastern European Time (EET)',     region: 'Europe'      },
+  { label: 'Warsaw',           tz: 'Europe/Warsaw',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Prague',           tz: 'Europe/Prague',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Vienna',           tz: 'Europe/Vienna',                   zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Budapest',         tz: 'Europe/Budapest',                 zone: 'Central European Time (CET)',     region: 'Europe'      },
+  { label: 'Athens',           tz: 'Europe/Athens',                   zone: 'Eastern European Time (EET)',     region: 'Europe'      },
+  { label: 'Bucharest',        tz: 'Europe/Bucharest',                zone: 'Eastern European Time (EET)',     region: 'Europe'      },
+  { label: 'Istanbul',         tz: 'Europe/Istanbul',                 zone: 'Turkey Time (TRT)',               region: 'Europe'      },
+  { label: 'Kyiv',             tz: 'Europe/Kiev',                     zone: 'Eastern European Time (EET)',     region: 'Europe'      },
+  { label: 'Moscow',           tz: 'Europe/Moscow',                   zone: 'Moscow Time (MSK)',               region: 'Europe'      },
+  { label: 'St. Petersburg',   tz: 'Europe/Moscow',                   zone: 'Moscow Time (MSK)',               region: 'Europe'      },
+  // ── Africa ────────────────────────────────────────────────
+  { label: 'Accra',            tz: 'Africa/Accra',                    zone: 'Greenwich Mean Time (GMT)',        region: 'Africa'      },
+  { label: 'Casablanca',       tz: 'Africa/Casablanca',               zone: 'Western European Time',           region: 'Africa'      },
+  { label: 'Lagos',            tz: 'Africa/Lagos',                    zone: 'West Africa Time (WAT)',          region: 'Africa'      },
+  { label: 'Abidjan',          tz: 'Africa/Abidjan',                  zone: 'Greenwich Mean Time (GMT)',        region: 'Africa'      },
+  { label: 'Cairo',            tz: 'Africa/Cairo',                    zone: 'Eastern European Time',           region: 'Africa'      },
+  { label: 'Nairobi',          tz: 'Africa/Nairobi',                  zone: 'East Africa Time (EAT)',          region: 'Africa'      },
+  { label: 'Addis Ababa',      tz: 'Africa/Addis_Ababa',              zone: 'East Africa Time (EAT)',          region: 'Africa'      },
+  { label: 'Johannesburg',     tz: 'Africa/Johannesburg',             zone: 'South Africa Time (SAST)',        region: 'Africa'      },
+  { label: 'Cape Town',        tz: 'Africa/Johannesburg',             zone: 'South Africa Time (SAST)',        region: 'Africa'      },
+  { label: 'Dar es Salaam',    tz: 'Africa/Dar_es_Salaam',            zone: 'East Africa Time (EAT)',          region: 'Africa'      },
+  { label: 'Khartoum',         tz: 'Africa/Khartoum',                 zone: 'Central Africa Time (CAT)',       region: 'Africa'      },
+  // ── Middle East ───────────────────────────────────────────
+  { label: 'Dubai',            tz: 'Asia/Dubai',                      zone: 'Gulf Standard Time (GST)',        region: 'Middle East' },
+  { label: 'Abu Dhabi',        tz: 'Asia/Dubai',                      zone: 'Gulf Standard Time (GST)',        region: 'Middle East' },
+  { label: 'Doha',             tz: 'Asia/Qatar',                      zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  { label: 'Riyadh',           tz: 'Asia/Riyadh',                     zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  { label: 'Kuwait City',      tz: 'Asia/Kuwait',                     zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  { label: 'Muscat',           tz: 'Asia/Muscat',                     zone: 'Gulf Standard Time (GST)',        region: 'Middle East' },
+  { label: 'Bahrain',          tz: 'Asia/Bahrain',                    zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  { label: 'Baghdad',          tz: 'Asia/Baghdad',                    zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  { label: 'Tehran',           tz: 'Asia/Tehran',                     zone: 'Iran Standard Time (IRST)',       region: 'Middle East' },
+  { label: 'Beirut',           tz: 'Asia/Beirut',                     zone: 'Eastern European Time',           region: 'Middle East' },
+  { label: 'Tel Aviv',         tz: 'Asia/Jerusalem',                  zone: 'Israel Standard Time (IST)',      region: 'Middle East' },
+  { label: 'Amman',            tz: 'Asia/Amman',                      zone: 'Arabia Standard Time (AST)',      region: 'Middle East' },
+  // ── Asia ──────────────────────────────────────────────────
+  { label: 'Karachi',          tz: 'Asia/Karachi',                    zone: 'Pakistan Standard Time (PKT)',    region: 'Asia'        },
+  { label: 'Mumbai',           tz: 'Asia/Kolkata',                    zone: 'India Standard Time (IST)',       region: 'Asia'        },
+  { label: 'Delhi',            tz: 'Asia/Kolkata',                    zone: 'India Standard Time (IST)',       region: 'Asia'        },
+  { label: 'Bangalore',        tz: 'Asia/Kolkata',                    zone: 'India Standard Time (IST)',       region: 'Asia'        },
+  { label: 'Chennai',          tz: 'Asia/Kolkata',                    zone: 'India Standard Time (IST)',       region: 'Asia'        },
+  { label: 'Colombo',          tz: 'Asia/Colombo',                    zone: 'Sri Lanka Time (SLST)',           region: 'Asia'        },
+  { label: 'Dhaka',            tz: 'Asia/Dhaka',                      zone: 'Bangladesh Standard Time (BST)',  region: 'Asia'        },
+  { label: 'Kathmandu',        tz: 'Asia/Kathmandu',                  zone: 'Nepal Time (NPT)',                region: 'Asia'        },
+  { label: 'Almaty',           tz: 'Asia/Almaty',                     zone: 'Alma-Ata Time (ALMT)',            region: 'Asia'        },
+  { label: 'Tashkent',         tz: 'Asia/Tashkent',                   zone: 'Uzbekistan Time (UZT)',           region: 'Asia'        },
+  { label: 'Yangon',           tz: 'Asia/Rangoon',                    zone: 'Myanmar Time (MMT)',              region: 'Asia'        },
+  { label: 'Bangkok',          tz: 'Asia/Bangkok',                    zone: 'Indochina Time (ICT)',            region: 'Asia'        },
+  { label: 'Ho Chi Minh',      tz: 'Asia/Ho_Chi_Minh',                zone: 'Indochina Time (ICT)',            region: 'Asia'        },
+  { label: 'Phnom Penh',       tz: 'Asia/Phnom_Penh',                 zone: 'Indochina Time (ICT)',            region: 'Asia'        },
+  { label: 'Jakarta',          tz: 'Asia/Jakarta',                    zone: 'Western Indonesia Time (WIB)',    region: 'Asia'        },
+  { label: 'Kuala Lumpur',     tz: 'Asia/Kuala_Lumpur',               zone: 'Malaysia Time (MYT)',             region: 'Asia'        },
+  { label: 'Singapore',        tz: 'Asia/Singapore',                  zone: 'Singapore Time (SGT)',            region: 'Asia'        },
+  { label: 'Manila',           tz: 'Asia/Manila',                     zone: 'Philippine Time (PST)',           region: 'Asia'        },
+  { label: 'Hong Kong',        tz: 'Asia/Hong_Kong',                  zone: 'Hong Kong Time (HKT)',            region: 'Asia'        },
+  { label: 'Taipei',           tz: 'Asia/Taipei',                     zone: 'China Standard Time (CST)',       region: 'Asia'        },
+  { label: 'Shanghai',         tz: 'Asia/Shanghai',                   zone: 'China Standard Time (CST)',       region: 'Asia'        },
+  { label: 'Beijing',          tz: 'Asia/Shanghai',                   zone: 'China Standard Time (CST)',       region: 'Asia'        },
+  { label: 'Shenzhen',         tz: 'Asia/Shanghai',                   zone: 'China Standard Time (CST)',       region: 'Asia'        },
+  { label: 'Seoul',            tz: 'Asia/Seoul',                      zone: 'Korea Standard Time (KST)',       region: 'Asia'        },
+  { label: 'Tokyo',            tz: 'Asia/Tokyo',                      zone: 'Japan Standard Time (JST)',       region: 'Asia'        },
+  { label: 'Osaka',            tz: 'Asia/Tokyo',                      zone: 'Japan Standard Time (JST)',       region: 'Asia'        },
+  // ── Russia ────────────────────────────────────────────────
+  { label: 'Yekaterinburg',    tz: 'Asia/Yekaterinburg',              zone: 'Yekaterinburg Time (YEKT)',       region: 'Russia'      },
+  { label: 'Novosibirsk',      tz: 'Asia/Novosibirsk',                zone: 'Novosibirsk Time (NOVT)',         region: 'Russia'      },
+  { label: 'Krasnoyarsk',      tz: 'Asia/Krasnoyarsk',                zone: 'Krasnoyarsk Time (KRAT)',         region: 'Russia'      },
+  { label: 'Irkutsk',          tz: 'Asia/Irkutsk',                    zone: 'Irkutsk Time (IRKT)',             region: 'Russia'      },
+  { label: 'Yakutsk',          tz: 'Asia/Yakutsk',                    zone: 'Yakutsk Time (YAKT)',             region: 'Russia'      },
+  { label: 'Vladivostok',      tz: 'Asia/Vladivostok',                zone: 'Vladivostok Time (VLAT)',         region: 'Russia'      },
+  // ── Oceania ───────────────────────────────────────────────
+  { label: 'Perth',            tz: 'Australia/Perth',                 zone: 'Australian Western Time',         region: 'Oceania'     },
+  { label: 'Darwin',           tz: 'Australia/Darwin',                zone: 'Australian Central Standard Time',region: 'Oceania'     },
+  { label: 'Adelaide',         tz: 'Australia/Adelaide',              zone: 'Australian Central Time',         region: 'Oceania'     },
+  { label: 'Brisbane',         tz: 'Australia/Brisbane',              zone: 'Australian Eastern Time',         region: 'Oceania'     },
+  { label: 'Sydney',           tz: 'Australia/Sydney',                zone: 'Australian Eastern Time',         region: 'Oceania'     },
+  { label: 'Melbourne',        tz: 'Australia/Melbourne',             zone: 'Australian Eastern Time',         region: 'Oceania'     },
+  { label: 'Hobart',           tz: 'Australia/Hobart',                zone: 'Australian Eastern Time',         region: 'Oceania'     },
+  { label: 'Auckland',         tz: 'Pacific/Auckland',                zone: 'New Zealand Time (NZST)',         region: 'Oceania'     },
+  { label: 'Suva',             tz: 'Pacific/Fiji',                    zone: 'Fiji Time (FJT)',                 region: 'Oceania'     },
+  { label: 'Port Moresby',     tz: 'Pacific/Port_Moresby',            zone: 'Papua New Guinea Time (PGT)',     region: 'Oceania'     },
+  { label: 'Noumea',           tz: 'Pacific/Noumea',                  zone: 'New Caledonia Time (NCT)',        region: 'Oceania'     },
+  // ── UTC ───────────────────────────────────────────────────
+  { label: 'UTC',              tz: 'UTC',                             zone: 'Coordinated Universal Time',      region: 'UTC'         },
 ];
+
+const QUICK_CHIPS   = ['Local Time','New York','London','Dubai','Singapore','Tokyo','Sydney','Los Angeles'];
+const REGION_ORDER  = ['Local','Americas','Europe','Africa','Middle East','Asia','Russia','Oceania','UTC'];
 
 /* ─────────────────────────────────────────
    STATE
@@ -832,13 +961,14 @@ function utcOffset(tz) {
 }
 
 function accentColor(tz) {
-  if (tz === 'local')              return '#6880aa';
-  if (tz.startsWith('America/'))  return '#4a8fff';
-  if (tz.startsWith('Europe/'))   return '#a78bfa';
-  if (tz.startsWith('Asia/'))     return '#f59e0b';
-  if (tz.startsWith('Australia/'))return '#2dd4bf';
-  if (tz.startsWith('Pacific/'))  return '#34d399';
-  if (tz.startsWith('Africa/'))   return '#f97316';
+  if (tz === 'local' || tz === 'UTC') return '#6880aa';
+  if (tz.startsWith('America/'))      return '#4a8fff';
+  if (tz.startsWith('Pacific/'))      return '#34d399';
+  if (tz.startsWith('Europe/'))       return '#a78bfa';
+  if (tz.startsWith('Africa/'))       return '#f97316';
+  if (tz.startsWith('Atlantic/'))     return '#06b6d4';
+  if (tz.startsWith('Asia/'))         return '#f59e0b';
+  if (tz.startsWith('Australia/'))    return '#2dd4bf';
   return '#6880aa';
 }
 
@@ -855,17 +985,47 @@ function initBuilder() {
 
 
 function buildTzSelect() {
-  const sel = document.getElementById('fTz');
-  PRESETS.forEach(p => {
-    const o = document.createElement('option');
-    o.value = p.tz;
-    o.textContent = p.label;
-    sel.appendChild(o);
-  });
-  const c = document.createElement('option');
-  c.value = '__custom__';
-  c.textContent = 'Custom IANA timezone...';
-  sel.appendChild(c);
+  const sel    = document.getElementById('fTz');
+  const search = document.getElementById('fTzSearch');
+
+  function populate(filter) {
+    const prev = sel.value;
+    sel.innerHTML = '';
+    const f = filter ? filter.toLowerCase() : '';
+
+    const byRegion = {};
+    PRESETS.forEach(p => {
+      if (f && !p.label.toLowerCase().includes(f) &&
+               !p.tz.toLowerCase().includes(f) &&
+               !p.zone.toLowerCase().includes(f)) return;
+      (byRegion[p.region] = byRegion[p.region] || []).push(p);
+    });
+
+    REGION_ORDER.forEach(region => {
+      const list = byRegion[region];
+      if (!list || !list.length) return;
+      const grp = document.createElement('optgroup');
+      grp.label = region;
+      list.forEach(p => {
+        const o = document.createElement('option');
+        o.value = p.tz;
+        o.textContent = p.label;
+        grp.appendChild(o);
+      });
+      sel.appendChild(grp);
+    });
+
+    const custom = document.createElement('option');
+    custom.value = '__custom__';
+    custom.textContent = 'Custom IANA timezone…';
+    sel.appendChild(custom);
+
+    if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
+  }
+
+  populate('');
+
+  search.addEventListener('input', () => populate(search.value));
 
   sel.addEventListener('change', () => {
     if (sel.value === '__custom__') {
@@ -888,7 +1048,9 @@ function buildTzSelect() {
 
 function buildChips() {
   const row = document.getElementById('chipRow');
-  PRESETS.forEach(p => {
+  QUICK_CHIPS.forEach(name => {
+    const p = PRESETS.find(x => x.label === name);
+    if (!p) return;
     const b = document.createElement('button');
     b.className = 'chip';
     b.textContent = p.label;
