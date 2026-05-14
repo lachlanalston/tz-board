@@ -67,7 +67,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 0.875rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
       box-shadow: 0 4px 16px rgba(74,143,255,0.35);
     }
 
@@ -793,7 +796,7 @@
 
   <div class="b-brand">
     <div class="b-logo-wrap">
-      <div class="b-logo-icon">🕐</div>
+      <div class="b-logo-icon">TZ</div>
       <div class="b-logo-name">TZ <span>Board</span></div>
     </div>
     <div class="b-tagline">Professional timezone dashboard for your office TV</div>
@@ -895,22 +898,22 @@
    DATA
 ─────────────────────────────────────────── */
 const PRESETS = [
-  { label: 'Local',        tz: 'local',                flag: '🏠' },
-  { label: 'New York',     tz: 'America/New_York',      flag: '🗽' },
-  { label: 'Chicago',      tz: 'America/Chicago',       flag: '🌆' },
-  { label: 'Denver',       tz: 'America/Denver',        flag: '⛰️'  },
-  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   flag: '🌴' },
-  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   flag: '🎰' },
-  { label: 'London',       tz: 'Europe/London',         flag: '🇬🇧' },
-  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      flag: '🇳🇱' },
-  { label: 'Dubai',        tz: 'Asia/Dubai',            flag: '🇦🇪' },
-  { label: 'Mumbai',       tz: 'Asia/Kolkata',          flag: '🇮🇳' },
-  { label: 'Singapore',    tz: 'Asia/Singapore',        flag: '🇸🇬' },
-  { label: 'Tokyo',        tz: 'Asia/Tokyo',            flag: '🇯🇵' },
-  { label: 'Sydney',       tz: 'Australia/Sydney',      flag: '🇦🇺' },
-  { label: 'Melbourne',    tz: 'Australia/Melbourne',   flag: '🇦🇺' },
-  { label: 'Perth',        tz: 'Australia/Perth',       flag: '🇦🇺' },
-  { label: 'Auckland',     tz: 'Pacific/Auckland',      flag: '🇳🇿' },
+  { label: 'Local Time',   tz: 'local',                zone: 'Local browser time'          },
+  { label: 'New York',     tz: 'America/New_York',      zone: 'Eastern Time (ET)'           },
+  { label: 'Chicago',      tz: 'America/Chicago',       zone: 'Central Time (CT)'           },
+  { label: 'Denver',       tz: 'America/Denver',        zone: 'Mountain Time (MT)'          },
+  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'           },
+  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'           },
+  { label: 'London',       tz: 'Europe/London',         zone: 'GMT / BST'                   },
+  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      zone: 'Central European Time'       },
+  { label: 'Dubai',        tz: 'Asia/Dubai',            zone: 'Gulf Standard Time (GST)'    },
+  { label: 'Mumbai',       tz: 'Asia/Kolkata',          zone: 'India Standard Time (IST)'   },
+  { label: 'Singapore',    tz: 'Asia/Singapore',        zone: 'Singapore Time (SGT)'        },
+  { label: 'Tokyo',        tz: 'Asia/Tokyo',            zone: 'Japan Standard Time (JST)'   },
+  { label: 'Sydney',       tz: 'Australia/Sydney',      zone: 'Australian Eastern Time'     },
+  { label: 'Melbourne',    tz: 'Australia/Melbourne',   zone: 'Australian Eastern Time'     },
+  { label: 'Perth',        tz: 'Australia/Perth',       zone: 'Australian Western Time'     },
+  { label: 'Auckland',     tz: 'Pacific/Auckland',      zone: 'New Zealand Time'            },
 ];
 
 /* ───────────────────────────────────────────
@@ -1004,12 +1007,12 @@ function buildTzSelect() {
   PRESETS.forEach(p => {
     const o = document.createElement('option');
     o.value = p.tz;
-    o.textContent = `${p.flag}  ${p.label}`;
+    o.textContent = p.label;
     sel.appendChild(o);
   });
   const c = document.createElement('option');
   c.value = '__custom__';
-  c.textContent = '⚙️  Custom IANA timezone…';
+  c.textContent = 'Custom IANA timezone...';
   sel.appendChild(c);
 
   sel.addEventListener('change', () => {
@@ -1028,7 +1031,7 @@ function buildTzSelect() {
     const lbl = document.getElementById('fLabel');
     if (!lbl.value.trim()) {
       const p = PRESETS.find(x => x.tz === sel.value);
-      if (p) lbl.value = `${p.flag} ${p.label}`;
+      if (p) lbl.value = p.label;
     }
   });
 }
@@ -1038,8 +1041,8 @@ function buildChips() {
   PRESETS.forEach(p => {
     const b = document.createElement('button');
     b.className = 'chip';
-    b.textContent = `${p.flag} ${p.label}`;
-    b.onclick = () => pushClock(`${p.flag} ${p.label}`, p.tz);
+    b.textContent = p.label;
+    b.onclick = () => pushClock(p.label, p.tz);
     row.appendChild(b);
   });
 }
@@ -1099,7 +1102,7 @@ function renderList() {
       <div class="ci-num">${i + 1}</div>
       <div class="ci-info">
         <div class="ci-label">${esc(c.label)}</div>
-        <div class="ci-tz">${c.tz === 'local' ? 'Local browser time' : c.tz}</div>
+        <div class="ci-tz">${PRESETS.find(p => p.tz === c.tz)?.zone || c.tz}</div>
       </div>
       <div class="ci-preview" id="prev-${c.id}">—</div>
       <div class="ci-actions">
@@ -1135,7 +1138,10 @@ function generateLink() {
     clocks:  clocks.map(c => ({ l: c.label, t: c.tz })),
   };
 
-  const enc = btoa(unescape(encodeURIComponent(JSON.stringify(cfg))));
+  const json  = JSON.stringify(cfg);
+  const bytes = new TextEncoder().encode(json);
+  const b64   = btoa(String.fromCharCode(...bytes));
+  const enc   = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   genUrl = `${location.origin}${location.pathname}?d=${enc}`;
 
   const box = document.getElementById('genLink');
@@ -1270,7 +1276,10 @@ function esc(s) {
   const d = new URLSearchParams(location.search).get('d');
   if (d) {
     try {
-      const cfg = JSON.parse(decodeURIComponent(escape(atob(d))));
+      const b64     = d.replace(/-/g, '+').replace(/_/g, '/');
+      const padded  = b64 + '=='.slice(0, (4 - b64.length % 4) % 4);
+      const bytes   = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+      const cfg     = JSON.parse(new TextDecoder().decode(bytes));
       initDisplay(cfg);
     } catch {
       document.body.innerHTML = `
