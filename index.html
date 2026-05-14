@@ -1190,12 +1190,14 @@ function tick() {
       case 'bdot': {
         const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
         el.className = `biz-dot ${st}`;
+        el.style.display = (st === 'closed' || st === 'weekend') ? 'none' : '';
         break;
       }
       case 'btxt': {
         const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
         el.className = `biz-txt ${st}`;
-        el.textContent = { open: 'Open', edge: 'Early/Late', closed: 'Closed', weekend: 'Weekend' }[st] || '';
+        el.textContent = { open: 'Open', edge: 'Early/Late' }[st] || '';
+        el.style.display = (st === 'closed' || st === 'weekend') ? 'none' : '';
         break;
       }
     }
