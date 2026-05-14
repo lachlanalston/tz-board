@@ -1119,6 +1119,14 @@ function buildTzSelect() {
 
   populate('');
 
+  function autoFillLabel(text) {
+    const lbl = document.getElementById('fLabel');
+    if (!lbl.value.trim() || lbl.value === lbl._autoFill) {
+      lbl.value = text;
+      lbl._autoFill = text;
+    }
+  }
+
   search.addEventListener('input', () => {
     populate(search.value);
     if (!search.value.trim()) return;
@@ -1126,8 +1134,7 @@ function buildTzSelect() {
     const idx  = opts.findIndex(o => o.value !== '__custom__');
     if (idx < 0) return;
     sel.selectedIndex = idx;
-    const lbl = document.getElementById('fLabel');
-    if (!lbl.value.trim()) lbl.value = opts[idx].textContent;
+    autoFillLabel(opts[idx].textContent);
   });
 
   sel.addEventListener('change', () => {
@@ -1141,11 +1148,8 @@ function buildTzSelect() {
         sel.value = PRESETS[0].tz;
       }
     }
-    const lbl = document.getElementById('fLabel');
-    if (!lbl.value.trim()) {
-      const opt = sel.options[sel.selectedIndex];
-      if (opt && opt.value !== '__custom__') lbl.value = opt.textContent;
-    }
+    const opt = sel.options[sel.selectedIndex];
+    if (opt && opt.value !== '__custom__') autoFillLabel(opt.textContent);
   });
 }
 
@@ -1172,7 +1176,9 @@ function addClock() {
   if (!label) { document.getElementById('fLabel').focus(); return; }
   if (tz === '__custom__') return;
   pushClock(label, tz);
-  document.getElementById('fLabel').value = '';
+  const lbl = document.getElementById('fLabel');
+  lbl.value = '';
+  lbl._autoFill = '';
 }
 
 function pushClock(label, tz) {
