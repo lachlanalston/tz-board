@@ -568,9 +568,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
-      gap: 0;
-      padding: 22px 28px 22px 36px;
+      justify-content: space-between;
+      padding: clamp(18px, 2.5vh, 32px) 28px clamp(18px, 2.5vh, 32px) 36px;
       overflow: hidden;
       position: relative;
       animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -607,24 +606,49 @@
       pointer-events: none;
     }
 
-    /* Label */
-    .tz-label {
-      font-size: var(--ls);
-      font-weight: 600;
-      color: var(--t2);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      line-height: 1;
-      margin-bottom: 0.3em;
+    /* Card header: flag + names */
+    .tz-header {
+      display: flex;
+      align-items: center;
+      gap: 0.55em;
       position: relative;
       z-index: 1;
     }
 
-    /* Time row */
+    .tz-flag {
+      height: calc(var(--ls) * 2.2);
+      width: auto;
+      border-radius: 3px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.55);
+    }
+
+    .tz-names { display: flex; flex-direction: column; gap: 0.2em; }
+
+    .tz-label {
+      font-size: var(--ls);
+      font-weight: 700;
+      color: var(--t1);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tz-country {
+      font-size: calc(var(--ls) * 0.65);
+      font-weight: 400;
+      color: var(--t2);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    /* Time row: H:MM + stacked seconds/ampm */
     .tz-time-row {
       display: flex;
-      align-items: baseline;
-      gap: 0;
+      align-items: flex-end;
+      gap: 0.15em;
       line-height: 1;
       position: relative;
       z-index: 1;
@@ -641,6 +665,14 @@
       line-height: 1;
     }
 
+    .tz-time-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.12em;
+      padding-bottom: 0.08em;
+    }
+
     .t-sec {
       font-family: 'DM Mono', monospace;
       font-size: var(--ss);
@@ -650,31 +682,34 @@
       font-feature-settings: "tnum";
       transition: opacity 0.1s;
       line-height: 1;
-      align-self: flex-end;
-      padding-bottom: 0.06em;
     }
 
     .t-ampm {
       font-family: 'Space Grotesk', system-ui, sans-serif;
-      font-size: calc(var(--ts) * 0.24);
+      font-size: var(--ss);
       font-weight: 700;
       color: var(--ca, var(--accent));
       letter-spacing: 0.06em;
-      background: color-mix(in srgb, var(--ca, var(--accent)) 14%, transparent);
-      border: 1px solid color-mix(in srgb, var(--ca, var(--accent)) 28%, transparent);
-      border-radius: 4px;
-      padding: 0.2em 0.4em;
-      margin-left: 0.4em;
-      align-self: flex-end;
-      margin-bottom: 0.1em;
-      line-height: 1.2;
+      line-height: 1;
+      text-transform: lowercase;
     }
 
-    /* Bottom row: offset */
+    /* Bottom row: date left, offset right */
     .tz-bottom {
-      margin-top: 0.35em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       position: relative;
       z-index: 1;
+      width: 100%;
+    }
+
+    .tz-date {
+      font-family: 'DM Mono', monospace;
+      font-size: var(--os);
+      font-weight: 400;
+      color: var(--t2);
+      letter-spacing: 0.02em;
     }
 
     .tz-offset {
@@ -683,26 +718,6 @@
       font-weight: 400;
       color: var(--t3);
       letter-spacing: 0.04em;
-    }
-
-    .tz-biz {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .tz-flag {
-      position: absolute;
-      right: clamp(14px, 2vw, 30px);
-      top: clamp(14px, 1.8vh, 28px);
-      height: clamp(28px, 4.5vw, 72px);
-      width: auto;
-      border-radius: 4px;
-      opacity: 0.65;
-      filter: saturate(0.7) brightness(0.88);
-      z-index: 1;
-      pointer-events: none;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.6);
     }
 
   </style>
@@ -1012,6 +1027,33 @@ const TZ_FLAGS = {
 
 function tzFlag(tz) { return TZ_FLAGS[tz] || ''; }
 
+const CC_NAMES = {
+  'us':'United States','ca':'Canada','mx':'Mexico','co':'Colombia','pe':'Peru',
+  'cl':'Chile','br':'Brazil','ar':'Argentina','ve':'Venezuela','cu':'Cuba',
+  'gb':'United Kingdom','ie':'Ireland','pt':'Portugal','fr':'France','es':'Spain',
+  'nl':'Netherlands','be':'Belgium','de':'Germany','ch':'Switzerland','it':'Italy',
+  'se':'Sweden','dk':'Denmark','no':'Norway','fi':'Finland','pl':'Poland',
+  'cz':'Czech Republic','at':'Austria','hu':'Hungary','gr':'Greece','ro':'Romania',
+  'tr':'Türkiye','ua':'Ukraine','ru':'Russia',
+  'gh':'Ghana','ma':'Morocco','ng':'Nigeria','ci':'Côte d\'Ivoire','eg':'Egypt',
+  'ke':'Kenya','et':'Ethiopia','za':'South Africa','tz':'Tanzania','sd':'Sudan',
+  'ae':'UAE','qa':'Qatar','sa':'Saudi Arabia','kw':'Kuwait','om':'Oman',
+  'bh':'Bahrain','iq':'Iraq','ir':'Iran','lb':'Lebanon','il':'Israel','jo':'Jordan',
+  'pk':'Pakistan','in':'India','lk':'Sri Lanka','bd':'Bangladesh','np':'Nepal',
+  'kz':'Kazakhstan','uz':'Uzbekistan','mm':'Myanmar','th':'Thailand','vn':'Vietnam',
+  'kh':'Cambodia','id':'Indonesia','my':'Malaysia','sg':'Singapore','ph':'Philippines',
+  'hk':'Hong Kong','tw':'Taiwan','cn':'China','kr':'South Korea','jp':'Japan',
+  'au':'Australia','nz':'New Zealand','fj':'Fiji','pg':'Papua New Guinea','nc':'New Caledonia',
+};
+
+function fmtCardDate(tz) {
+  try {
+    const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date().toLocaleDateString('en-US',
+      tz === 'local' ? opts : { ...opts, timeZone: tz });
+  } catch { return ''; }
+}
+
 function accentColor(tz) {
   if (tz === 'local' || tz === 'UTC') return '#6880aa';
   if (tz.startsWith('America/'))      return '#4a8fff';
@@ -1259,17 +1301,26 @@ function initDisplay(raw) {
     card.className = 'tz-card';
     card.style.setProperty('--ca', ca);
 
+    const country = cc ? (CC_NAMES[cc] || '') : '';
     card.innerHTML = `
-      <div class="tz-label">${esc(item.l)}</div>
+      <div class="tz-header">
+        ${cc ? `<img class="tz-flag" src="https://flagcdn.com/w160/${cc}.png" alt="" onerror="this.style.display='none'">` : ''}
+        <div class="tz-names">
+          <div class="tz-label">${esc(item.l)}</div>
+          ${country ? `<div class="tz-country">${esc(country)}</div>` : ''}
+        </div>
+      </div>
       <div class="tz-time-row">
         <span class="t-main" data-tz="${esc(tz)}" data-p="hm"></span>
-        <span class="t-sec"  data-tz="${esc(tz)}" data-p="s"></span>
-        <span class="t-ampm" data-tz="${esc(tz)}" data-p="ampm"></span>
+        <div class="tz-time-right">
+          <span class="t-sec"  data-tz="${esc(tz)}" data-p="s"></span>
+          <span class="t-ampm" data-tz="${esc(tz)}" data-p="ampm"></span>
+        </div>
       </div>
       <div class="tz-bottom">
+        <span class="tz-date"   data-tz="${esc(tz)}" data-p="date"></span>
         <span class="tz-offset" data-tz="${esc(tz)}" data-p="offset"></span>
       </div>
-      ${cc ? `<img class="tz-flag" src="https://flagcdn.com/w320/${cc}.png" alt="" onerror="this.style.display='none'">` : ''}
     `;
     grid.appendChild(card);
   });
@@ -1312,6 +1363,10 @@ function tick() {
       case 'offset':
         if (!el._offset) el._offset = utcOffset(tz);
         el.textContent = el._offset;
+        break;
+      case 'date':
+        const d = fmtCardDate(tz);
+        if (el.textContent !== d) el.textContent = d;
         break;
     }
   });
