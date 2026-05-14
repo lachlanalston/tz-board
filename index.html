@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TZ Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #080c14;
+      --surface:      #0f1623;
+      --surface-2:    #1a2234;
+      --border:       #1e2d45;
+      --border-hi:    #2a3f5f;
+      --accent:       #4f8ef7;
+      --accent-dark:  #1e3a6e;
+      --text:         #e8edf5;
+      --text-2:       #8899bb;
+      --text-3:       #4a5a7a;
+      --success:      #22c55e;
+      --danger-bg:    #7f1d1d;
+      --danger-text:  #ef4444;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════
+       BUILDER
+    ══════════════════════════════════════ */
+
+    #builder {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+
+    .b-logo {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .b-logo h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .b-logo h1 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .b-logo p {
+      color: var(--text-2);
+      font-size: 0.9375rem;
+      margin-top: 6px;
+    }
+
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    /* Quick-add chips */
+    .quick-add { margin-bottom: 28px; }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .chip {
+      padding: 5px 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+      font-family: inherit;
+    }
+
+    .chip:hover {
+      background: var(--surface-2);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* Add form */
+    .add-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+
+    .form-field { flex: 1; min-width: 160px; }
+
+    .form-field label {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--text-2);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-field input,
+    .form-field select {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 10px 13px;
+      font-size: 0.9375rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus { border-color: var(--accent); }
+
+    .form-field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%238899bb' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 34px;
+      cursor: pointer;
+    }
+
+    .form-field select option { background: #1a2234; }
+
+    .btn-add {
+      padding: 10px 22px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s, transform 0.1s;
+      flex-shrink: 0;
+    }
+
+    .btn-add:hover { background: #3a7ae8; }
+    .btn-add:active { transform: scale(0.97); }
+
+    /* Clock list */
+    .list-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .list-count {
+      font-size: 0.8125rem;
+      color: var(--text-3);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .clock-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 28px;
+      min-height: 56px;
+    }
+
+    .empty-hint {
+      padding: 28px;
+      text-align: center;
+      color: var(--text-3);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      font-size: 0.9375rem;
+    }
+
+    .clock-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ci-info { flex: 1; min-width: 0; }
+
+    .ci-label {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ci-tz {
+      font-size: 0.8rem;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    .ci-preview {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9375rem;
+      color: var(--accent);
+      min-width: 100px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-2);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      font-family: inherit;
+    }
+
+    .icon-btn:hover:not(:disabled) { background: var(--border-hi); color: var(--text); }
+    .icon-btn:disabled { opacity: 0.25; cursor: default; }
+    .icon-btn.del:hover:not(:disabled) { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-bg); }
+
+    /* Generate section */
+    .gen-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .gen-title { font-size: 1rem; font-weight: 600; }
+
+    .gen-sub {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      margin-top: 4px;
+      margin-bottom: 18px;
+    }
+
+    .btn-gen {
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.12s, transform 0.1s;
+    }
+
+    .btn-gen:hover { background: #3a7ae8; }
+    .btn-gen:active { transform: scale(0.98); }
+
+    .gen-link {
+      display: none;
+      margin-top: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      color: var(--text-2);
+      word-break: break-all;
+      text-align: left;
+    }
+
+    .link-btns {
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .btn-outline {
+      padding: 8px 18px;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 8px;
+      color: var(--text-2);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .toast {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.875rem;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.25s;
+      min-height: 1.2em;
+    }
+
+    .toast.show { opacity: 1; }
+
+    /* ══════════════════════════════════════
+       DISPLAY MODE
+    ══════════════════════════════════════ */
+
+    #display {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      padding: 12px;
+      gap: 12px;
+      background: var(--bg);
+    }
+
+    /* Grid layouts — specificity beats display:none */
+    #display.n1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      --ts: clamp(4rem, 14vw, 14rem);
+      --ls: clamp(1.5rem, 3.5vw, 4rem);
+      --ds: clamp(0.9rem, 1.8vw, 2rem);
+    }
+    #display.n2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      --ts: clamp(3rem, 10vw, 10rem);
+      --ls: clamp(1.25rem, 2.8vw, 3rem);
+      --ds: clamp(0.8rem, 1.5vw, 1.75rem);
+    }
+    #display.n3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr;
+      --ts: clamp(2.5rem, 7vw, 8rem);
+      --ls: clamp(1rem, 2.2vw, 2.5rem);
+      --ds: clamp(0.75rem, 1.2vw, 1.5rem);
+    }
+    #display.n4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      --ts: clamp(2rem, 7vw, 7rem);
+      --ls: clamp(1rem, 2vw, 2.25rem);
+      --ds: clamp(0.7rem, 1.1vw, 1.25rem);
+    }
+    /* 5 clocks: 3 top row + 2 bottom centered using 6-col grid */
+    #display.n5 {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.75rem, 5.5vw, 5.5rem);
+      --ls: clamp(0.875rem, 1.8vw, 2rem);
+      --ds: clamp(0.65rem, 1vw, 1.1rem);
+    }
+    #display.n5 .tz-card               { grid-column: span 2; }
+    #display.n5 .tz-card:nth-child(4)  { grid-column: 2 / span 2; }
+    #display.n5 .tz-card:nth-child(5)  { grid-column: 4 / span 2; }
+
+    #display.n6 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.75rem, 5.5vw, 5.5rem);
+      --ls: clamp(0.875rem, 1.8vw, 2rem);
+      --ds: clamp(0.65rem, 1vw, 1.1rem);
+    }
+    /* 7 clocks: 4 top + 3 bottom (centered via 8-col trick) */
+    #display.n7 {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.5rem, 4.5vw, 4.5rem);
+      --ls: clamp(0.75rem, 1.5vw, 1.75rem);
+      --ds: clamp(0.6rem, 0.9vw, 1rem);
+    }
+    #display.n7 .tz-card               { grid-column: span 2; }
+    #display.n7 .tz-card:nth-child(5)  { grid-column: 2 / span 2; }
+    #display.n7 .tz-card:nth-child(6)  { grid-column: 4 / span 2; }
+    #display.n7 .tz-card:nth-child(7)  { grid-column: 6 / span 2; }
+
+    #display.n8 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.5rem, 4.5vw, 4.5rem);
+      --ls: clamp(0.75rem, 1.5vw, 1.75rem);
+      --ds: clamp(0.6rem, 0.9vw, 1rem);
+    }
+
+    .tz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Accent glow bar at card top */
+    .tz-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 35%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 0 0 4px 4px;
+      opacity: 0.8;
+    }
+
+    .tz-label {
+      font-size: var(--ls);
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .tz-time-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25em;
+    }
+
+    .tz-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ts);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .tz-ampm {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: calc(var(--ts) * 0.36);
+      font-weight: 400;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .tz-date {
+      font-size: var(--ds);
+      color: var(--text-3);
+      letter-spacing: 0.02em;
+      margin-top: 2px;
+    }
+
+    /* Back-to-builder link in display mode */
+    .display-edit-link {
+      position: fixed;
+      bottom: 12px;
+      right: 14px;
+      font-size: 0.75rem;
+      color: var(--text-3);
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+
+    #display:hover ~ .display-edit-link,
+    .display-edit-link:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ BUILDER ═══════════════ -->
+<div id="builder">
+
+  <div class="b-logo">
+    <h1>TZ <em>Board</em></h1>
+    <p>Timezone dashboard for your office TV</p>
+  </div>
+
+  <div class="quick-add">
+    <div class="section-label">Quick add</div>
+    <div class="chip-row" id="chipRow"></div>
+  </div>
+
+  <div class="add-form">
+    <div class="form-row">
+      <div class="form-field">
+        <label for="fLabel">Display label</label>
+        <input type="text" id="fLabel" placeholder="e.g. New York, Client HQ…" autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label for="fTz">Timezone</label>
+        <select id="fTz"></select>
+      </div>
+      <button class="btn-add" onclick="addClock()">+ Add</button>
+    </div>
+  </div>
+
+  <div class="list-header">
+    <div class="section-label" style="margin-bottom:0">Clocks</div>
+    <span class="list-count" id="clockCount"></span>
+  </div>
+  <div class="clock-list" id="clockList"></div>
+
+  <div class="gen-section">
+    <div class="gen-title">Ready to go live?</div>
+    <div class="gen-sub">Generates a shareable link — open on any TV or browser.</div>
+    <button class="btn-gen" onclick="generateLink()">Generate Dashboard Link</button>
+    <div class="gen-link" id="genLink"></div>
+    <div class="link-btns" id="linkBtns">
+      <button class="btn-outline" onclick="copyLink()">Copy link</button>
+      <button class="btn-outline" onclick="openDash()">Open dashboard →</button>
+    </div>
+    <span class="toast" id="toast">Copied to clipboard!</span>
+  </div>
+
+</div>
+
+<!-- ═══════════════ DISPLAY ═══════════════ -->
+<div id="display"></div>
+<a class="display-edit-link" id="editLink" href="/">← edit</a>
+
+<script>
+'use strict';
+
+/* ─────────────────────────────────
+   PRESET TIMEZONES
+───────────────────────────────── */
+const PRESETS = [
+  { label: 'Local',       tz: 'local',                flag: '🏠' },
+  { label: 'New York',    tz: 'America/New_York',      flag: '🗽' },
+  { label: 'Chicago',     tz: 'America/Chicago',       flag: '🌆' },
+  { label: 'Denver',      tz: 'America/Denver',        flag: '⛰️' },
+  { label: 'Los Angeles', tz: 'America/Los_Angeles',   flag: '🌴' },
+  { label: 'Las Vegas',   tz: 'America/Los_Angeles',   flag: '🎰' },
+  { label: 'London',      tz: 'Europe/London',         flag: '🇬🇧' },
+  { label: 'Amsterdam',   tz: 'Europe/Amsterdam',      flag: '🇳🇱' },
+  { label: 'Dubai',       tz: 'Asia/Dubai',            flag: '🇦🇪' },
+  { label: 'Mumbai',      tz: 'Asia/Kolkata',          flag: '🇮🇳' },
+  { label: 'Singapore',   tz: 'Asia/Singapore',        flag: '🇸🇬' },
+  { label: 'Tokyo',       tz: 'Asia/Tokyo',            flag: '🇯🇵' },
+  { label: 'Sydney',      tz: 'Australia/Sydney',      flag: '🇦🇺' },
+  { label: 'Melbourne',   tz: 'Australia/Melbourne',   flag: '🇦🇺' },
+  { label: 'Perth',       tz: 'Australia/Perth',       flag: '🇦🇺' },
+  { label: 'Auckland',    tz: 'Pacific/Auckland',      flag: '🇳🇿' },
+];
+
+/* ─────────────────────────────────
+   STATE
+───────────────────────────────── */
+let clocks = [];
+let idSeq = 0;
+let generatedUrl = '';
+
+/* ─────────────────────────────────
+   TIME HELPERS
+───────────────────────────────── */
+function timeStr(tz) {
+  const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+  return tz === 'local'
+    ? new Date().toLocaleTimeString('en-US', opts)
+    : new Date().toLocaleTimeString('en-US', { ...opts, timeZone: tz });
+}
+
+function dateStr(tz) {
+  const opts = { weekday: 'long', month: 'long', day: 'numeric' };
+  return tz === 'local'
+    ? new Date().toLocaleDateString('en-US', opts)
+    : new Date().toLocaleDateString('en-US', { ...opts, timeZone: tz });
+}
+
+function splitTime(s) {
+  const sp = s.split(' ');
+  return { hms: sp[0], ampm: sp[1] || '' };
+}
+
+/* ─────────────────────────────────
+   BUILDER — SETUP
+───────────────────────────────── */
+function initBuilder() {
+  buildSelect();
+  buildChips();
+  renderList();
+  setInterval(refreshPreviews, 1000);
+}
+
+function buildSelect() {
+  const sel = document.getElementById('fTz');
+  PRESETS.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.tz;
+    o.textContent = `${p.flag}  ${p.label}`;
+    sel.appendChild(o);
+  });
+  const custom = document.createElement('option');
+  custom.value = '__custom__';
+  custom.textContent = '⚙️  Custom IANA timezone…';
+  sel.appendChild(custom);
+
+  sel.addEventListener('change', () => {
+    if (sel.value === '__custom__') {
+      const val = prompt('Enter IANA timezone (e.g. Asia/Kolkata):');
+      if (val && val.trim()) {
+        const o = document.createElement('option');
+        o.value = val.trim();
+        o.textContent = val.trim();
+        o.selected = true;
+        sel.insertBefore(o, sel.lastElementChild);
+      } else {
+        sel.value = PRESETS[0].tz;
+      }
+    }
+    // Auto-fill blank label
+    const lbl = document.getElementById('fLabel');
+    if (!lbl.value.trim()) {
+      const p = PRESETS.find(x => x.tz === sel.value);
+      if (p) lbl.value = `${p.flag} ${p.label}`;
+    }
+  });
+}
+
+function buildChips() {
+  const row = document.getElementById('chipRow');
+  PRESETS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = `${p.flag} ${p.label}`;
+    btn.onclick = () => pushClock(`${p.flag} ${p.label}`, p.tz);
+    row.appendChild(btn);
+  });
+}
+
+/* ─────────────────────────────────
+   BUILDER — CLOCK CRUD
+───────────────────────────────── */
+function addClock() {
+  const label = document.getElementById('fLabel').value.trim();
+  const tz    = document.getElementById('fTz').value;
+  if (!label) { document.getElementById('fLabel').focus(); return; }
+  if (tz === '__custom__') return;
+  pushClock(label, tz);
+  document.getElementById('fLabel').value = '';
+}
+
+function pushClock(label, tz) {
+  clocks.push({ id: ++idSeq, label, tz });
+  renderList();
+}
+
+function removeClock(id) {
+  clocks = clocks.filter(c => c.id !== id);
+  renderList();
+}
+
+function moveClock(id, delta) {
+  const i = clocks.findIndex(c => c.id === id);
+  const j = i + delta;
+  if (j < 0 || j >= clocks.length) return;
+  [clocks[i], clocks[j]] = [clocks[j], clocks[i]];
+  renderList();
+}
+
+function renderList() {
+  const el = document.getElementById('clockList');
+  document.getElementById('clockCount').textContent = clocks.length ? `(${clocks.length})` : '';
+
+  if (!clocks.length) {
+    el.innerHTML = '<div class="empty-hint">No clocks yet — use Quick Add or the form above.</div>';
+    return;
+  }
+
+  el.innerHTML = clocks.map((c, i) => `
+    <div class="clock-item">
+      <div class="ci-info">
+        <div class="ci-label">${esc(c.label)}</div>
+        <div class="ci-tz">${c.tz === 'local' ? 'Local browser time' : c.tz}</div>
+      </div>
+      <div class="ci-preview" id="prev-${c.id}">—</div>
+      <div class="ci-actions">
+        <button class="icon-btn" onclick="moveClock(${c.id},-1)" ${i === 0 ? 'disabled' : ''} title="Move up">↑</button>
+        <button class="icon-btn" onclick="moveClock(${c.id}, 1)" ${i === clocks.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
+        <button class="icon-btn del" onclick="removeClock(${c.id})" title="Remove">✕</button>
+      </div>
+    </div>
+  `).join('');
+
+  refreshPreviews();
+}
+
+function refreshPreviews() {
+  clocks.forEach(c => {
+    const el = document.getElementById(`prev-${c.id}`);
+    if (el) el.textContent = timeStr(c.tz);
+  });
+}
+
+/* ─────────────────────────────────
+   BUILDER — LINK
+───────────────────────────────── */
+function generateLink() {
+  if (!clocks.length) { alert('Add at least one clock first.'); return; }
+  const data = clocks.map(c => ({ l: c.label, t: c.tz }));
+  const enc = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  generatedUrl = `${location.origin}${location.pathname}?d=${enc}`;
+
+  const linkEl = document.getElementById('genLink');
+  linkEl.textContent = generatedUrl;
+  linkEl.style.display = 'block';
+  document.getElementById('linkBtns').style.display = 'flex';
+}
+
+function copyLink() {
+  if (!generatedUrl) return;
+  navigator.clipboard.writeText(generatedUrl).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  });
+}
+
+function openDash() {
+  if (generatedUrl) window.open(generatedUrl, '_blank');
+}
+
+/* ─────────────────────────────────
+   DISPLAY MODE
+───────────────────────────────── */
+function initDisplay(config) {
+  document.getElementById('builder').style.display = 'none';
+  document.body.style.overflow = 'hidden';
+  document.title = 'TZ Board';
+
+  const n = Math.min(config.length, 8);
+  const display = document.getElementById('display');
+  display.className = `n${n}`;
+
+  config.slice(0, 8).forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'tz-card';
+    card.innerHTML = `
+      <div class="tz-label">${esc(item.l)}</div>
+      <div class="tz-time-row">
+        <div class="tz-time" data-tz="${esc(item.t)}" data-p="hms"></div>
+        <div class="tz-ampm" data-tz="${esc(item.t)}" data-p="ampm"></div>
+      </div>
+      <div class="tz-date" data-tz="${esc(item.t)}" data-p="date"></div>
+    `;
+    display.appendChild(card);
+  });
+
+  // Edit link goes back to builder with config pre-loaded
+  document.getElementById('editLink').href = location.pathname;
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+function tick() {
+  document.querySelectorAll('[data-p]').forEach(el => {
+    const tz = el.dataset.tz;
+    const t = splitTime(timeStr(tz));
+    if      (el.dataset.p === 'hms')  el.textContent = t.hms;
+    else if (el.dataset.p === 'ampm') el.textContent = t.ampm;
+    else if (el.dataset.p === 'date') el.textContent = dateStr(tz);
+  });
+}
+
+/* ─────────────────────────────────
+   UTIL
+───────────────────────────────── */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+/* ─────────────────────────────────
+   INIT
+───────────────────────────────── */
+(function init() {
+  const d = new URLSearchParams(location.search).get('d');
+  if (d) {
+    try {
+      const config = JSON.parse(decodeURIComponent(escape(atob(d))));
+      if (!Array.isArray(config) || !config.length) throw new Error();
+      initDisplay(config);
+    } catch {
+      document.body.innerHTML = `
+        <div style="color:var(--danger-text);padding:48px;font-family:monospace;background:var(--bg);min-height:100vh">
+          Invalid dashboard URL.<br><br>
+          <a href="${location.pathname}" style="color:var(--accent)">← Back to builder</a>
+        </div>`;
+    }
+  } else {
+    initBuilder();
+  }
+})();
+</script>
+</body>
+</html>
