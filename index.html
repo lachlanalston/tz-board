@@ -491,38 +491,38 @@
 
     #d-grid.n1 {
       display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr;
-      --ts: clamp(5rem, 20vw, 28rem);
-      --ss: clamp(2rem, 8.5vw, 12rem);
-      --ls: clamp(1.25rem, 3.5vw, 5.5rem);
-      --os: clamp(0.75rem, 1.8vw, 2.75rem);
+      --ts: clamp(5rem, min(20vw, 42vh), 30rem);
+      --ss: clamp(2rem, min(8.5vw, 18vh), 13rem);
+      --ls: clamp(1.25rem, min(3.5vw, 7vh), 6rem);
+      --os: clamp(0.75rem, min(1.8vw, 3.5vh), 3rem);
     }
     #d-grid.n2 {
       display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr;
-      --ts: clamp(3.5rem, 13vw, 17rem);
-      --ss: clamp(1.5rem, 5.5vw, 7rem);
-      --ls: clamp(1rem, 3vw, 4.25rem);
-      --os: clamp(0.7rem, 1.5vw, 2.1rem);
+      --ts: clamp(3.5rem, min(13vw, 38vh), 20rem);
+      --ss: clamp(1.5rem, min(5.5vw, 16vh), 8.5rem);
+      --ls: clamp(1rem, min(3vw, 7vh), 5rem);
+      --os: clamp(0.7rem, min(1.5vw, 3vh), 2.5rem);
     }
     #d-grid.n3 {
       display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: 1fr;
-      --ts: clamp(3rem, 10vw, 13rem);
-      --ss: clamp(1.2rem, 4.2vw, 5.5rem);
-      --ls: clamp(0.875rem, 2.5vw, 3.5rem);
-      --os: clamp(0.65rem, 1.3vw, 1.75rem);
+      --ts: clamp(3rem, min(10vw, 36vh), 16rem);
+      --ss: clamp(1.2rem, min(4.2vw, 15vh), 6.5rem);
+      --ls: clamp(0.875rem, min(2.5vw, 6vh), 4rem);
+      --os: clamp(0.65rem, min(1.3vw, 2.5vh), 2rem);
     }
     #d-grid.n4 {
       display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-      --ts: clamp(2.75rem, 10vw, 12rem);
-      --ss: clamp(1.1rem, 4.2vw, 5rem);
-      --ls: clamp(0.875rem, 2.2vw, 3rem);
-      --os: clamp(0.625rem, 1.2vw, 1.6rem);
+      --ts: clamp(2.75rem, min(11vw, 26vh), 14rem);
+      --ss: clamp(1.1rem, min(4.5vw, 11vh), 6rem);
+      --ls: clamp(0.875rem, min(2.2vw, 5vh), 3.5rem);
+      --os: clamp(0.625rem, min(1.2vw, 2.8vh), 1.8rem);
     }
     #d-grid.n5 {
       display: grid; grid-template-columns: repeat(6,1fr); grid-template-rows: 1fr 1fr;
-      --ts: clamp(2rem, 7.5vw, 9.5rem);
-      --ss: clamp(0.875rem, 3.2vw, 4rem);
-      --ls: clamp(0.75rem, 1.9vw, 2.6rem);
-      --os: clamp(0.575rem, 1.1vw, 1.4rem);
+      --ts: clamp(2rem, min(7.5vw, 20vh), 11rem);
+      --ss: clamp(0.875rem, min(3.2vw, 8.5vh), 4.5rem);
+      --ls: clamp(0.75rem, min(1.9vw, 4.5vh), 3rem);
+      --os: clamp(0.575rem, min(1.1vw, 2.5vh), 1.6rem);
     }
     #d-grid.n5 .tz-card              { grid-column: span 2; }
     #d-grid.n5 .tz-card:nth-child(4) { grid-column: 2 / span 2; }
@@ -530,17 +530,17 @@
 
     #d-grid.n6 {
       display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: 1fr 1fr;
-      --ts: clamp(2rem, 7.5vw, 9.5rem);
-      --ss: clamp(0.875rem, 3.2vw, 4rem);
-      --ls: clamp(0.75rem, 1.9vw, 2.6rem);
-      --os: clamp(0.575rem, 1.1vw, 1.4rem);
+      --ts: clamp(2rem, min(7.5vw, 20vh), 11rem);
+      --ss: clamp(0.875rem, min(3.2vw, 8.5vh), 4.5rem);
+      --ls: clamp(0.75rem, min(1.9vw, 4.5vh), 3rem);
+      --os: clamp(0.575rem, min(1.1vw, 2.5vh), 1.6rem);
     }
     #d-grid.n7 {
       display: grid; grid-template-columns: repeat(8,1fr); grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.75rem, 6vw, 7.5rem);
-      --ss: clamp(0.75rem, 2.5vw, 3.1rem);
-      --ls: clamp(0.675rem, 1.7vw, 2.1rem);
-      --os: clamp(0.55rem, 0.95vw, 1.25rem);
+      --ts: clamp(1.75rem, min(6vw, 17vh), 9rem);
+      --ss: clamp(0.75rem, min(2.5vw, 7vh), 3.75rem);
+      --ls: clamp(0.675rem, min(1.7vw, 3.8vh), 2.5rem);
+      --os: clamp(0.55rem, min(0.95vw, 2.2vh), 1.4rem);
     }
     #d-grid.n7 .tz-card              { grid-column: span 2; }
     #d-grid.n7 .tz-card:nth-child(5) { grid-column: 2 / span 2; }
@@ -549,10 +549,10 @@
 
     #d-grid.n8 {
       display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.75rem, 6vw, 7.5rem);
-      --ss: clamp(0.75rem, 2.5vw, 3.1rem);
-      --ls: clamp(0.675rem, 1.7vw, 2.1rem);
-      --os: clamp(0.55rem, 0.95vw, 1.25rem);
+      --ts: clamp(1.75rem, min(6vw, 17vh), 9rem);
+      --ss: clamp(0.75rem, min(2.5vw, 7vh), 3.75rem);
+      --ls: clamp(0.675rem, min(1.7vw, 3.8vh), 2.5rem);
+      --os: clamp(0.55rem, min(0.95vw, 2.2vh), 1.4rem);
     }
 
     /* Cards */
@@ -693,18 +693,16 @@
 
     .tz-flag {
       position: absolute;
-      right: clamp(16px, 2.5vw, 40px);
-      top: 50%;
-      transform: translateY(-50%);
-      height: clamp(36px, 6vw, 96px);
+      right: clamp(14px, 2vw, 30px);
+      top: clamp(14px, 1.8vh, 28px);
+      height: clamp(18px, 3vw, 48px);
       width: auto;
-      border-radius: 4px;
-      opacity: 0.5;
-      filter: saturate(0.7) brightness(0.9);
+      border-radius: 3px;
+      opacity: 0.6;
+      filter: saturate(0.75) brightness(0.9);
       z-index: 1;
       pointer-events: none;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.6);
-      object-fit: cover;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.55);
     }
 
   </style>
