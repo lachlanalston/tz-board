@@ -6,107 +6,104 @@
   <title>TZ Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #060a14;
-      --card:        #0b1120;
-      --card-2:      #0e1628;
-      --border:      rgba(100, 150, 255, 0.09);
-      --border-hi:   rgba(100, 150, 255, 0.22);
-      --accent:      #4a8fff;
-      --accent-glow: rgba(74, 143, 255, 0.18);
-      --t1:          #eef2ff;
-      --t2:          #6880aa;
-      --t3:          #38496a;
-      --green:       #00c878;
-      --amber:       #f5a000;
-      --red:         #ff3d57;
-      --radius:      18px;
-      --gap:         13px;
+      --bg:        #07090f;
+      --card:      #0c0f1a;
+      --card-2:    #101422;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --accent:    #4a8fff;
+      --aglow:     rgba(74,143,255,0.16);
+      --t1:        #f0f4ff;
+      --t2:        #5d7099;
+      --t3:        #2e3d58;
+      --green:     #00d08a;
+      --amber:     #f0a000;
+      --red:       #ff4060;
+      --radius:    16px;
+      --gap:       12px;
     }
 
     body {
       background: var(--bg);
       color: var(--t1);
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ══════════════════════════════════════════
+    /* ══════════════════════════════════════
        BUILDER
-    ══════════════════════════════════════════ */
+    ══════════════════════════════════════ */
 
     #builder {
-      max-width: 760px;
+      max-width: 740px;
       margin: 0 auto;
       padding: 52px 20px 80px;
     }
 
-    /* Brand */
     .b-brand {
       text-align: center;
       margin-bottom: 48px;
     }
 
-    .b-logo-wrap {
+    .b-mark {
       display: inline-flex;
       align-items: center;
       gap: 11px;
       margin-bottom: 10px;
     }
 
-    .b-logo-icon {
+    .b-mark-icon {
       width: 40px;
       height: 40px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #3a7ef0, #6ab0ff);
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2a6ee8 0%, #5a9fff 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.875rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8125rem;
+      font-weight: 500;
       color: #fff;
-      box-shadow: 0 4px 16px rgba(74,143,255,0.35);
+      letter-spacing: 0;
+      box-shadow: 0 4px 18px rgba(74,143,255,0.32);
     }
 
-    .b-logo-name {
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
+    .b-mark-name {
+      font-size: 1.625rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
     }
 
-    .b-logo-name span { color: var(--accent); }
+    .b-mark-name em { color: var(--accent); font-style: normal; }
 
-    .b-tagline {
-      font-size: 0.9375rem;
-      color: var(--t2);
-    }
+    .b-tagline { font-size: 0.9375rem; color: var(--t2); font-weight: 400; }
 
     /* Panels */
     .panel {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 22px;
-      margin-bottom: 16px;
+      padding: 20px;
+      margin-bottom: 14px;
     }
 
     .panel-label {
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--t3);
       margin-bottom: 14px;
     }
 
     /* Fields */
-    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
 
     .field label {
       font-size: 0.8125rem;
@@ -118,11 +115,11 @@
     .field select {
       background: var(--card-2);
       border: 1px solid var(--border-hi);
-      border-radius: 9px;
+      border-radius: 8px;
       color: var(--t1);
-      padding: 10px 13px;
+      padding: 9px 12px;
       font-size: 0.9375rem;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
@@ -130,56 +127,46 @@
     .field input:focus,
     .field select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+      box-shadow: 0 0 0 3px var(--aglow);
     }
 
     .field select {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%236880aa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%235d7099' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 13px center;
-      padding-right: 36px;
+      background-position: right 12px center;
+      padding-right: 34px;
       cursor: pointer;
     }
 
-    .field select option { background: #0e1628; }
+    .field select option { background: #101422; }
 
-    /* Dashboard config */
+    /* Config grid */
     .cfg-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
-    @media (max-width: 520px) { .cfg-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 500px) { .cfg-grid { grid-template-columns: 1fr; } }
 
     /* Biz hours toggle */
-    .biz-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .toggle-field { display: flex; flex-direction: column; gap: 5px; }
+    .toggle-field label { font-size: 0.8125rem; font-weight: 500; color: var(--t2); }
 
-    .toggle-field { display: flex; flex-direction: column; gap: 6px; }
+    .biz-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-    .toggle-field label {
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--t2);
-    }
-
-    .toggle-wrap {
+    .toggle-btn {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       cursor: pointer;
-      height: 42px;
+      height: 40px;
     }
 
     .toggle {
-      width: 40px;
-      height: 22px;
+      width: 38px;
+      height: 21px;
       border-radius: 11px;
       background: var(--card-2);
       border: 1px solid var(--border-hi);
@@ -193,40 +180,29 @@
     .toggle::after {
       content: '';
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 15px; height: 15px;
       border-radius: 50%;
       background: #fff;
-      top: 2px;
-      left: 2px;
+      top: 2px; left: 2px;
       transition: transform 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
     }
 
-    .toggle.on::after { transform: translateX(18px); }
+    .toggle.on::after { transform: translateX(17px); }
 
-    .toggle-text {
-      font-size: 0.875rem;
-      color: var(--t2);
-    }
+    .toggle-txt { font-size: 0.875rem; color: var(--t2); }
 
-    .biz-time-fields {
-      display: flex;
-      gap: 12px;
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .biz-time-fields .field { flex: 1; }
+    .biz-times { display: flex; gap: 10px; flex: 1; min-width: 180px; }
+    .biz-times .field { flex: 1; }
 
     /* Buttons */
     .btn {
-      padding: 10px 20px;
+      padding: 9px 18px;
       border: none;
-      border-radius: 9px;
+      border-radius: 8px;
       font-size: 0.9375rem;
       font-weight: 600;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
       cursor: pointer;
       transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
       white-space: nowrap;
@@ -234,142 +210,107 @@
 
     .btn:active { transform: scale(0.97); }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: #3a7ef0;
-      box-shadow: 0 4px 20px var(--accent-glow);
-    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #3a7ef0; box-shadow: 0 4px 20px var(--aglow); }
 
     .btn-ghost {
       background: var(--card-2);
       color: var(--t2);
       border: 1px solid var(--border-hi);
     }
+    .btn-ghost:hover { color: var(--t1); background: rgba(255,255,255,0.07); }
 
-    .btn-ghost:hover { color: var(--t1); background: var(--border-hi); }
-
-    /* Quick add */
-    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    /* Quick add chips */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
 
     .chip {
-      padding: 5px 14px;
+      padding: 5px 13px;
       background: transparent;
       border: 1px solid var(--border-hi);
       border-radius: 20px;
       font-size: 0.8125rem;
+      font-weight: 500;
       color: var(--t2);
       cursor: pointer;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
       transition: background 0.12s, border-color 0.12s, color 0.12s;
     }
 
     .chip:hover {
-      background: var(--accent-glow);
+      background: var(--aglow);
       border-color: var(--accent);
       color: var(--t1);
     }
 
     /* Add form */
-    .add-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: flex-end;
-    }
+    .add-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+    .add-row .field { flex: 1; min-width: 140px; }
 
-    .add-row .field { flex: 1; min-width: 150px; }
+    /* List */
+    .list-head { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
 
-    /* Clock list */
-    .list-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .list-head-label {
-      font-size: 0.6875rem;
+    .list-head-lbl {
+      font-size: 0.625rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--t3);
     }
 
     .list-badge {
-      padding: 1px 8px;
+      padding: 1px 7px;
       background: var(--card-2);
       border: 1px solid var(--border-hi);
-      border-radius: 10px;
+      border-radius: 9px;
       font-size: 0.75rem;
       color: var(--t3);
     }
 
-    .clock-list {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      margin-bottom: 20px;
-    }
+    .clock-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
 
     .empty-hint {
-      padding: 30px;
+      padding: 28px;
       text-align: center;
       color: var(--t3);
       border: 1px dashed var(--border-hi);
-      border-radius: 12px;
+      border-radius: 10px;
       font-size: 0.9375rem;
     }
 
     .ci {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 10px 14px;
+      border-radius: 10px;
+      padding: 10px 13px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 11px;
       transition: border-color 0.15s;
     }
 
     .ci:hover { border-color: var(--border-hi); }
 
     .ci-num {
-      width: 22px;
-      height: 22px;
+      width: 21px; height: 21px;
       border-radius: 6px;
       background: var(--card-2);
       border: 1px solid var(--border-hi);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      color: var(--t3);
-      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--t3); font-weight: 600;
       flex-shrink: 0;
     }
 
     .ci-info { flex: 1; min-width: 0; }
 
-    .ci-label {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .ci-label { font-size: 0.9375rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .ci-tz { font-size: 0.8rem; color: var(--t3); margin-top: 2px; }
+    .ci-zone { font-size: 0.8rem; color: var(--t3); margin-top: 1px; }
 
     .ci-preview {
+      font-family: 'DM Mono', monospace;
       font-size: 0.9375rem;
-      font-weight: 500;
-      font-feature-settings: "tnum";
       color: var(--accent);
-      min-width: 110px;
+      min-width: 108px;
       text-align: right;
       flex-shrink: 0;
     }
@@ -377,35 +318,28 @@
     .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
     .ib {
-      width: 28px;
-      height: 28px;
+      width: 27px; height: 27px;
       background: var(--card-2);
       border: 1px solid var(--border);
-      border-radius: 7px;
+      border-radius: 6px;
       color: var(--t2);
       font-size: 0.8rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', system-ui, sans-serif;
-      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      transition: all 0.12s;
     }
 
     .ib:hover:not(:disabled) { background: var(--border-hi); color: var(--t1); }
     .ib:disabled { opacity: 0.2; cursor: default; }
-    .ib.del:hover:not(:disabled) {
-      background: rgba(255,61,87,0.14);
-      color: var(--red);
-      border-color: rgba(255,61,87,0.3);
-    }
+    .ib.del:hover:not(:disabled) { background: rgba(255,64,96,0.12); color: var(--red); border-color: rgba(255,64,96,0.25); }
 
-    /* Generate */
+    /* Generate panel */
     .gen-panel {
-      background: linear-gradient(160deg, var(--card) 0%, var(--card-2) 100%);
+      background: var(--card);
       border: 1px solid var(--border-hi);
       border-radius: var(--radius);
-      padding: 28px;
+      padding: 26px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -415,7 +349,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(74,143,255,0.08), transparent);
+      background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(74,143,255,0.07), transparent);
       pointer-events: none;
     }
 
@@ -424,61 +358,51 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(74,143,255,0.7), transparent);
+      background: linear-gradient(90deg, transparent, rgba(74,143,255,0.5), transparent);
     }
 
-    .gen-title { font-size: 1.0625rem; font-weight: 700; margin-bottom: 5px; }
-
-    .gen-sub { font-size: 0.875rem; color: var(--t2); margin-bottom: 22px; }
+    .gen-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .gen-sub { font-size: 0.875rem; color: var(--t2); margin-bottom: 20px; font-weight: 400; }
 
     .btn-gen {
       position: relative;
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       background: var(--accent);
       border: none;
-      border-radius: 11px;
+      border-radius: 10px;
       color: #fff;
-      font-size: 1rem;
+      font-size: 0.9375rem;
       font-weight: 700;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
       cursor: pointer;
       transition: background 0.12s, box-shadow 0.15s, transform 0.1s;
       letter-spacing: -0.01em;
     }
 
-    .btn-gen:hover {
-      background: #3a7ef0;
-      box-shadow: 0 8px 28px rgba(74,143,255,0.4);
-    }
-
+    .btn-gen:hover { background: #3a7ef0; box-shadow: 0 8px 28px rgba(74,143,255,0.38); }
     .btn-gen:active { transform: scale(0.98); }
 
     .gen-link-box {
       display: none;
-      margin-top: 16px;
-      background: rgba(0,0,0,0.3);
+      margin-top: 14px;
+      background: rgba(0,0,0,0.35);
       border: 1px solid var(--border-hi);
-      border-radius: 9px;
-      padding: 12px 14px;
-      font-family: 'Inter', monospace;
+      border-radius: 8px;
+      padding: 11px 13px;
+      font-family: 'DM Mono', monospace;
       font-size: 0.8125rem;
       color: var(--t2);
       word-break: break-all;
       text-align: left;
     }
 
-    .gen-btns {
-      display: none;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 12px;
-    }
+    .gen-btns { display: none; gap: 9px; justify-content: center; margin-top: 11px; }
 
     .toast {
       display: block;
       height: 1.2em;
-      margin-top: 10px;
+      margin-top: 9px;
       font-size: 0.875rem;
       color: var(--green);
       opacity: 0;
@@ -487,9 +411,9 @@
 
     .toast.show { opacity: 1; }
 
-    /* ══════════════════════════════════════════
+    /* ══════════════════════════════════════
        DISPLAY MODE
-    ══════════════════════════════════════════ */
+    ══════════════════════════════════════ */
 
     #display {
       display: none;
@@ -499,53 +423,84 @@
       background: var(--bg);
     }
 
+    /* Scanline texture — reads as "designed" on TV */
+    #display::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.06) 2px,
+        rgba(0,0,0,0.06) 4px
+      );
+      pointer-events: none;
+      z-index: 500;
+    }
+
     /* Header */
     #d-header {
-      height: 46px;
+      height: 44px;
       flex-shrink: 0;
-      padding: 0 22px;
+      padding: 0 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      background: rgba(6, 10, 20, 0.98);
-      gap: 16px;
+      background: rgba(7,9,15,0.97);
+      position: relative;
+      z-index: 600;
     }
 
-    .d-header-left {
+    .d-hdr-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .d-live-dot {
-      width: 7px;
-      height: 7px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 8px var(--green);
+      box-shadow: 0 0 7px var(--green);
       animation: livePulse 2.5s ease-in-out infinite;
       flex-shrink: 0;
     }
 
     @keyframes livePulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
-      50%       { opacity: 0.5; box-shadow: 0 0 3px var(--green); }
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
     }
 
-    #d-title {
+    .d-wordmark {
+      font-family: 'DM Mono', monospace;
       font-size: 0.8125rem;
-      font-weight: 700;
+      font-weight: 500;
       letter-spacing: 0.1em;
+      color: var(--t1);
+    }
+
+    .d-sep {
+      color: var(--t3);
+      font-weight: 300;
+      font-size: 0.875rem;
+      margin: 0 1px;
+    }
+
+    #d-company {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--t2);
     }
 
     #d-date {
-      font-size: 0.8125rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
       color: var(--t3);
-      font-feature-settings: "tnum";
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
     }
 
     /* Grid */
@@ -557,111 +512,91 @@
     }
 
     #d-grid.n1 {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr;
-      --ts: clamp(5rem, 17vw, 17rem);
-      --ls: clamp(1.5rem, 3.8vw, 4rem);
-      --ds: clamp(0.9rem, 1.8vw, 2rem);
+      display: grid; grid-template-columns: 1fr; grid-template-rows: 1fr;
+      --ts: clamp(5rem, 17vw, 18rem);
+      --ss: clamp(2rem, 7vw, 7.5rem);
+      --ls: clamp(1.25rem, 3vw, 3.5rem);
+      --os: clamp(0.75rem, 1.5vw, 1.75rem);
     }
-
     #d-grid.n2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      --ts: clamp(3rem, 11.5vw, 12rem);
-      --ls: clamp(1.2rem, 2.8vw, 3rem);
-      --ds: clamp(0.8rem, 1.5vw, 1.6rem);
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr;
+      --ts: clamp(3.5rem, 11vw, 12rem);
+      --ss: clamp(1.5rem, 4.5vw, 5rem);
+      --ls: clamp(1rem, 2.5vw, 2.75rem);
+      --os: clamp(0.7rem, 1.3vw, 1.4rem);
     }
-
     #d-grid.n3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 1fr;
-      --ts: clamp(2.5rem, 7.5vw, 8.5rem);
-      --ls: clamp(1rem, 2.2vw, 2.4rem);
-      --ds: clamp(0.75rem, 1.2vw, 1.4rem);
+      display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: 1fr;
+      --ts: clamp(3rem, 8vw, 9rem);
+      --ss: clamp(1.2rem, 3.3vw, 3.75rem);
+      --ls: clamp(0.875rem, 2vw, 2.25rem);
+      --os: clamp(0.65rem, 1.1vw, 1.2rem);
     }
-
     #d-grid.n4 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      --ts: clamp(2.5rem, 7.5vw, 8rem);
-      --ls: clamp(1rem, 2vw, 2.2rem);
-      --ds: clamp(0.7rem, 1.1vw, 1.25rem);
-    }
-
-    /* 5 clocks: 3 top + 2 centered bottom (6-col trick) */
-    #d-grid.n5 {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-rows: 1fr 1fr;
-      --ts: clamp(2rem, 6vw, 6.5rem);
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+      --ts: clamp(2.75rem, 8vw, 8.5rem);
+      --ss: clamp(1.1rem, 3.3vw, 3.5rem);
       --ls: clamp(0.875rem, 1.8vw, 2rem);
-      --ds: clamp(0.65rem, 1vw, 1.1rem);
+      --os: clamp(0.625rem, 1vw, 1.1rem);
     }
-
+    #d-grid.n5 {
+      display: grid; grid-template-columns: repeat(6,1fr); grid-template-rows: 1fr 1fr;
+      --ts: clamp(2rem, 6vw, 6.5rem);
+      --ss: clamp(0.875rem, 2.5vw, 2.75rem);
+      --ls: clamp(0.75rem, 1.6vw, 1.75rem);
+      --os: clamp(0.575rem, 0.9vw, 1rem);
+    }
     #d-grid.n5 .tz-card              { grid-column: span 2; }
     #d-grid.n5 .tz-card:nth-child(4) { grid-column: 2 / span 2; }
     #d-grid.n5 .tz-card:nth-child(5) { grid-column: 4 / span 2; }
 
     #d-grid.n6 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 1fr 1fr;
+      display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: 1fr 1fr;
       --ts: clamp(2rem, 6vw, 6.5rem);
-      --ls: clamp(0.875rem, 1.8vw, 2rem);
-      --ds: clamp(0.65rem, 1vw, 1.1rem);
+      --ss: clamp(0.875rem, 2.5vw, 2.75rem);
+      --ls: clamp(0.75rem, 1.6vw, 1.75rem);
+      --os: clamp(0.575rem, 0.9vw, 1rem);
     }
-
-    /* 7 clocks: 4 top + 3 centered bottom (8-col trick) */
     #d-grid.n7 {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.5rem, 4.8vw, 5.5rem);
-      --ls: clamp(0.75rem, 1.6vw, 1.8rem);
-      --ds: clamp(0.6rem, 0.9vw, 1.05rem);
+      display: grid; grid-template-columns: repeat(8,1fr); grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.75rem, 5vw, 5.5rem);
+      --ss: clamp(0.75rem, 2vw, 2.25rem);
+      --ls: clamp(0.675rem, 1.4vw, 1.5rem);
+      --os: clamp(0.55rem, 0.8vw, 0.9rem);
     }
-
     #d-grid.n7 .tz-card              { grid-column: span 2; }
     #d-grid.n7 .tz-card:nth-child(5) { grid-column: 2 / span 2; }
     #d-grid.n7 .tz-card:nth-child(6) { grid-column: 4 / span 2; }
     #d-grid.n7 .tz-card:nth-child(7) { grid-column: 6 / span 2; }
 
     #d-grid.n8 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.5rem, 4.8vw, 5.5rem);
-      --ls: clamp(0.75rem, 1.6vw, 1.8rem);
-      --ds: clamp(0.6rem, 0.9vw, 1.05rem);
+      display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: 1fr 1fr;
+      --ts: clamp(1.75rem, 5vw, 5.5rem);
+      --ss: clamp(0.75rem, 2vw, 2.25rem);
+      --ls: clamp(0.675rem, 1.4vw, 1.5rem);
+      --os: clamp(0.55rem, 0.8vw, 0.9rem);
     }
 
     /* Cards */
     @keyframes cardIn {
-      from { opacity: 0; transform: translateY(14px) scale(0.99); }
-      to   { opacity: 1; transform: translateY(0)   scale(1); }
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .tz-card {
-      background: linear-gradient(160deg, #0c1222 0%, #080e1a 100%);
-      border: 1px solid rgba(100,150,255,0.1);
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      gap: 5px;
-      padding: 18px 16px;
+      gap: 0;
+      padding: 22px 28px 22px 36px;
       overflow: hidden;
       position: relative;
-      animation: cardIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-      box-shadow:
-        0 0 0 1px rgba(74,143,255,0.05),
-        0 24px 64px rgba(0,0,0,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.035);
+      animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
     }
 
     .tz-card:nth-child(1) { animation-delay: 0.04s; }
@@ -673,81 +608,54 @@
     .tz-card:nth-child(7) { animation-delay: 0.34s; }
     .tz-card:nth-child(8) { animation-delay: 0.39s; }
 
-    /* Top accent line */
+    /* Left accent bar — per-region color via --ca CSS var */
     .tz-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 5%, rgba(74,143,255,0.65) 50%, transparent 95%);
+      top: 22%;
+      bottom: 22%;
+      left: 0;
+      width: 3px;
+      background: var(--ca, var(--accent));
+      border-radius: 0 3px 3px 0;
     }
 
-    /* Subtle inner corner glow */
+    /* Subtle right-side gradient wash from accent color */
     .tz-card::after {
       content: '';
       position: absolute;
       inset: 0;
-      border-radius: var(--radius);
-      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(74,143,255,0.06), transparent 70%);
+      background: radial-gradient(ellipse 60% 80% at 100% 50%, color-mix(in srgb, var(--ca, var(--accent)) 8%, transparent), transparent 70%);
       pointer-events: none;
     }
 
-    /* Business hours status */
-    .tz-status {
-      position: absolute;
-      top: 13px;
-      right: 15px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      z-index: 1;
-    }
-
-    .s-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .s-dot.open    { background: var(--green); box-shadow: 0 0 6px var(--green); }
-    .s-dot.edge    { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
-    .s-dot.closed  { background: var(--red);   opacity: 0.55; }
-    .s-dot.weekend { background: var(--t3); }
-
-    .s-txt {
-      font-size: 0.6875rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-
-    .s-txt.open    { color: var(--green); }
-    .s-txt.edge    { color: var(--amber); }
-    .s-txt.closed  { color: var(--t3); }
-    .s-txt.weekend { color: var(--t3); }
-
-    /* Card text */
+    /* Label */
     .tz-label {
       font-size: var(--ls);
-      font-weight: 700;
+      font-weight: 600;
       color: var(--t2);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      text-align: center;
       line-height: 1;
+      margin-bottom: 0.3em;
+      position: relative;
       z-index: 1;
     }
 
+    /* Time row */
     .tz-time-row {
       display: flex;
       align-items: baseline;
+      gap: 0;
+      line-height: 1;
+      position: relative;
       z-index: 1;
     }
 
-    .tz-time {
+    .t-main {
+      font-family: 'DM Mono', monospace;
       font-size: var(--ts);
-      font-weight: 800;
+      font-weight: 500;
       color: var(--t1);
       letter-spacing: -0.03em;
       font-feature-settings: "tnum";
@@ -755,71 +663,113 @@
       line-height: 1;
     }
 
-    .tz-time .sep {
-      font-weight: 200;
+    .t-sec {
+      font-family: 'DM Mono', monospace;
+      font-size: var(--ss);
+      font-weight: 300;
       color: var(--t3);
-      transition: opacity 0.12s;
+      letter-spacing: -0.02em;
+      font-feature-settings: "tnum";
+      transition: opacity 0.1s;
+      line-height: 1;
+      align-self: flex-end;
+      padding-bottom: 0.06em;
     }
 
-    .tz-ampm {
+    .t-ampm {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: calc(var(--ts) * 0.24);
+      font-weight: 700;
+      color: var(--ca, var(--accent));
+      letter-spacing: 0.06em;
+      background: color-mix(in srgb, var(--ca, var(--accent)) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--ca, var(--accent)) 28%, transparent);
+      border-radius: 4px;
+      padding: 0.2em 0.4em;
+      margin-left: 0.4em;
       align-self: flex-end;
-      font-size: calc(var(--ts) * 0.28);
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-      background: rgba(74,143,255,0.12);
-      border: 1px solid rgba(74,143,255,0.2);
-      border-radius: 5px;
-      padding: 0.18em 0.38em;
-      margin-left: 0.3em;
-      margin-bottom: 0.12em;
-      line-height: 1.3;
+      margin-bottom: 0.1em;
+      line-height: 1.2;
+    }
+
+    /* Bottom row: offset + biz status */
+    .tz-bottom {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.35em;
+      position: relative;
       z-index: 1;
     }
 
-    .tz-date {
-      font-size: var(--ds);
+    .tz-offset {
+      font-family: 'DM Mono', monospace;
+      font-size: var(--os);
+      font-weight: 400;
       color: var(--t3);
       letter-spacing: 0.04em;
-      text-align: center;
-      z-index: 1;
     }
 
-    .tz-date.diff-day { color: var(--amber); }
+    .tz-biz {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .biz-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .biz-dot.open    { background: var(--green); box-shadow: 0 0 5px var(--green); }
+    .biz-dot.edge    { background: var(--amber); box-shadow: 0 0 5px var(--amber); }
+    .biz-dot.closed  { background: var(--red); opacity: 0.5; }
+    .biz-dot.weekend { background: var(--t3); }
+
+    .biz-txt {
+      font-size: calc(var(--os) * 0.9);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .biz-txt.open    { color: var(--green); }
+    .biz-txt.edge    { color: var(--amber); }
+    .biz-txt.closed  { color: var(--t3); }
+    .biz-txt.weekend { color: var(--t3); }
 
   </style>
 </head>
 <body>
 
-<!-- ════════════════════ BUILDER ════════════════════ -->
+<!-- ══════════════ BUILDER ══════════════ -->
 <div id="builder">
 
   <div class="b-brand">
-    <div class="b-logo-wrap">
-      <div class="b-logo-icon">TZ</div>
-      <div class="b-logo-name">TZ <span>Board</span></div>
+    <div class="b-mark">
+      <div class="b-mark-icon">TZ</div>
+      <div class="b-mark-name">TZ <em>Board</em></div>
     </div>
     <div class="b-tagline">Professional timezone dashboard for your office TV</div>
   </div>
 
-  <!-- Dashboard settings -->
+  <!-- Settings -->
   <div class="panel">
     <div class="panel-label">Dashboard settings</div>
     <div class="cfg-grid">
-
       <div class="field">
         <label for="cfgTitle">Company / display name</label>
         <input type="text" id="cfgTitle" placeholder="e.g. Alston IT" autocomplete="off">
       </div>
-
       <div class="toggle-field">
         <label>Business hours indicator</label>
-        <div class="biz-row">
-          <div class="toggle-wrap" onclick="toggleBiz()">
+        <div class="biz-wrap">
+          <div class="toggle-btn" onclick="toggleBiz()">
             <div class="toggle" id="bizToggle"></div>
-            <span class="toggle-text" id="bizLabel">Disabled</span>
+            <span class="toggle-txt" id="bizLabel">Disabled</span>
           </div>
-          <div class="biz-time-fields" id="bizTimeFields" style="display:none">
+          <div class="biz-times" id="bizTimes" style="display:none">
             <div class="field">
               <label for="bizFrom">From</label>
               <select id="bizFrom"></select>
@@ -831,7 +781,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -857,9 +806,9 @@
     </div>
   </div>
 
-  <!-- Clock list -->
+  <!-- List -->
   <div class="list-head">
-    <div class="list-head-label">Clocks</div>
+    <div class="list-head-lbl">Clocks</div>
     <div class="list-badge" id="listBadge" style="display:none"></div>
   </div>
   <div class="clock-list" id="clockList"></div>
@@ -879,12 +828,14 @@
 
 </div>
 
-<!-- ════════════════════ DISPLAY ════════════════════ -->
+<!-- ══════════════ DISPLAY ══════════════ -->
 <div id="display">
   <div id="d-header">
-    <div class="d-header-left">
+    <div class="d-hdr-left">
       <div class="d-live-dot"></div>
-      <div id="d-title">TZ BOARD</div>
+      <span class="d-wordmark">TZ BOARD</span>
+      <span class="d-sep" id="d-sep-el" style="display:none"> | </span>
+      <span id="d-company"></span>
     </div>
     <div id="d-date"></div>
   </div>
@@ -894,39 +845,39 @@
 <script>
 'use strict';
 
-/* ───────────────────────────────────────────
-   DATA
-─────────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   PRESETS
+───────────────────────────────────────── */
 const PRESETS = [
-  { label: 'Local Time',   tz: 'local',                zone: 'Local browser time'          },
-  { label: 'New York',     tz: 'America/New_York',      zone: 'Eastern Time (ET)'           },
-  { label: 'Chicago',      tz: 'America/Chicago',       zone: 'Central Time (CT)'           },
-  { label: 'Denver',       tz: 'America/Denver',        zone: 'Mountain Time (MT)'          },
-  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'           },
-  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'           },
-  { label: 'London',       tz: 'Europe/London',         zone: 'GMT / BST'                   },
-  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      zone: 'Central European Time'       },
-  { label: 'Dubai',        tz: 'Asia/Dubai',            zone: 'Gulf Standard Time (GST)'    },
-  { label: 'Mumbai',       tz: 'Asia/Kolkata',          zone: 'India Standard Time (IST)'   },
-  { label: 'Singapore',    tz: 'Asia/Singapore',        zone: 'Singapore Time (SGT)'        },
-  { label: 'Tokyo',        tz: 'Asia/Tokyo',            zone: 'Japan Standard Time (JST)'   },
-  { label: 'Sydney',       tz: 'Australia/Sydney',      zone: 'Australian Eastern Time'     },
-  { label: 'Melbourne',    tz: 'Australia/Melbourne',   zone: 'Australian Eastern Time'     },
-  { label: 'Perth',        tz: 'Australia/Perth',       zone: 'Australian Western Time'     },
-  { label: 'Auckland',     tz: 'Pacific/Auckland',      zone: 'New Zealand Time'            },
+  { label: 'Local Time',   tz: 'local',                zone: 'Local browser time'         },
+  { label: 'New York',     tz: 'America/New_York',      zone: 'Eastern Time (ET)'          },
+  { label: 'Chicago',      tz: 'America/Chicago',       zone: 'Central Time (CT)'          },
+  { label: 'Denver',       tz: 'America/Denver',        zone: 'Mountain Time (MT)'         },
+  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'          },
+  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   zone: 'Pacific Time (PT)'          },
+  { label: 'London',       tz: 'Europe/London',         zone: 'GMT / BST'                  },
+  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      zone: 'Central European Time'      },
+  { label: 'Dubai',        tz: 'Asia/Dubai',            zone: 'Gulf Standard Time (GST)'   },
+  { label: 'Mumbai',       tz: 'Asia/Kolkata',          zone: 'India Standard Time (IST)'  },
+  { label: 'Singapore',    tz: 'Asia/Singapore',        zone: 'Singapore Time (SGT)'       },
+  { label: 'Tokyo',        tz: 'Asia/Tokyo',            zone: 'Japan Standard Time (JST)'  },
+  { label: 'Sydney',       tz: 'Australia/Sydney',      zone: 'Australian Eastern Time'    },
+  { label: 'Melbourne',    tz: 'Australia/Melbourne',   zone: 'Australian Eastern Time'    },
+  { label: 'Perth',        tz: 'Australia/Perth',       zone: 'Australian Western Time'    },
+  { label: 'Auckland',     tz: 'Pacific/Auckland',      zone: 'New Zealand Time'           },
 ];
 
-/* ───────────────────────────────────────────
+/* ─────────────────────────────────────────
    STATE
-─────────────────────────────────────────── */
-let clocks  = [];
-let idSeq   = 0;
-let genUrl  = '';
-let bizOn   = false;
+───────────────────────────────────────── */
+let clocks = [];
+let idSeq  = 0;
+let genUrl = '';
+let bizOn  = false;
 
-/* ───────────────────────────────────────────
-   TIME UTILS
-─────────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   TIME / TZ UTILS
+───────────────────────────────────────── */
 function fmtTime(tz) {
   const o = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
   return tz === 'local'
@@ -934,50 +885,55 @@ function fmtTime(tz) {
     : new Date().toLocaleTimeString('en-US', { ...o, timeZone: tz });
 }
 
-function fmtDate(tz) {
-  const o = { weekday: 'long', month: 'long', day: 'numeric' };
-  return tz === 'local'
-    ? new Date().toLocaleDateString('en-US', o)
-    : new Date().toLocaleDateString('en-US', { ...o, timeZone: tz });
-}
-
 function fmtHeaderDate() {
   return new Date().toLocaleDateString('en-US', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-  });
+    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+  }).toUpperCase();
 }
 
 function splitTime(s) {
   const [hms, ampm] = s.split(' ');
   const [h, m, sec] = hms.split(':');
-  return { h, m, s: sec, ampm: ampm || '' };
+  return { h: String(parseInt(h)), m, s: sec, ampm: ampm || '' };
 }
 
-function localWeekday() {
-  return new Date().toLocaleDateString('en-US', { weekday: 'long' });
+function utcOffset(tz) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz === 'local' ? undefined : tz,
+      timeZoneName: 'shortOffset'
+    }).formatToParts(new Date());
+    const tzn = parts.find(p => p.type === 'timeZoneName');
+    if (tzn) return tzn.value.replace('GMT', 'UTC');
+  } catch {}
+  return 'UTC';
 }
 
-function tzWeekday(tz) {
-  return tz === 'local'
-    ? localWeekday()
-    : new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: tz });
+function accentColor(tz) {
+  if (tz === 'local')              return '#6880aa';
+  if (tz.startsWith('America/'))  return '#4a8fff';
+  if (tz.startsWith('Europe/'))   return '#a78bfa';
+  if (tz.startsWith('Asia/'))     return '#f59e0b';
+  if (tz.startsWith('Australia/'))return '#2dd4bf';
+  if (tz.startsWith('Pacific/'))  return '#34d399';
+  if (tz.startsWith('Africa/'))   return '#f97316';
+  return '#6880aa';
 }
 
 function bizStatus(tz, sh, eh) {
   const d = tz === 'local'
     ? new Date()
     : new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
-  const h   = d.getHours();
-  const day = d.getDay();
+  const h = d.getHours(), day = d.getDay();
   if (day === 0 || day === 6)          return 'weekend';
   if (h >= sh && h < eh)              return 'open';
-  if ((h === sh - 1) || (h === eh))   return 'edge';
+  if (h === sh - 1 || h === eh)       return 'edge';
   return 'closed';
 }
 
-/* ───────────────────────────────────────────
-   BUILDER — INIT
-─────────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   BUILDER — SETUP
+───────────────────────────────────────── */
 function initBuilder() {
   buildHourSelects();
   buildTzSelect();
@@ -990,9 +946,8 @@ function buildHourSelects() {
   ['bizFrom', 'bizTo'].forEach(id => {
     const sel = document.getElementById(id);
     for (let i = 0; i < 24; i++) {
-      const h  = i % 12 || 12;
-      const ap = i < 12 ? 'AM' : 'PM';
-      const o  = document.createElement('option');
+      const h = i % 12 || 12, ap = i < 12 ? 'AM' : 'PM';
+      const o = document.createElement('option');
       o.value = i;
       o.textContent = `${h}:00 ${ap}`;
       if (id === 'bizFrom' && i === 9)  o.selected = true;
@@ -1020,9 +975,7 @@ function buildTzSelect() {
       const v = prompt('Enter IANA timezone (e.g. Asia/Kolkata):');
       if (v && v.trim()) {
         const o = document.createElement('option');
-        o.value = v.trim();
-        o.textContent = v.trim();
-        o.selected = true;
+        o.value = v.trim(); o.textContent = v.trim(); o.selected = true;
         sel.insertBefore(o, sel.lastElementChild);
       } else {
         sel.value = PRESETS[0].tz;
@@ -1051,12 +1004,12 @@ function toggleBiz() {
   bizOn = !bizOn;
   document.getElementById('bizToggle').classList.toggle('on', bizOn);
   document.getElementById('bizLabel').textContent = bizOn ? 'Enabled' : 'Disabled';
-  document.getElementById('bizTimeFields').style.display = bizOn ? 'flex' : 'none';
+  document.getElementById('bizTimes').style.display = bizOn ? 'flex' : 'none';
 }
 
-/* ───────────────────────────────────────────
+/* ─────────────────────────────────────────
    BUILDER — CLOCKS
-─────────────────────────────────────────── */
+───────────────────────────────────────── */
 function addClock() {
   const label = document.getElementById('fLabel').value.trim();
   const tz    = document.getElementById('fTz').value;
@@ -1102,7 +1055,7 @@ function renderList() {
       <div class="ci-num">${i + 1}</div>
       <div class="ci-info">
         <div class="ci-label">${esc(c.label)}</div>
-        <div class="ci-tz">${PRESETS.find(p => p.tz === c.tz)?.zone || c.tz}</div>
+        <div class="ci-zone">${PRESETS.find(p => p.tz === c.tz)?.zone || c.tz}</div>
       </div>
       <div class="ci-preview" id="prev-${c.id}">—</div>
       <div class="ci-actions">
@@ -1123,14 +1076,14 @@ function refreshPreviews() {
   });
 }
 
-/* ───────────────────────────────────────────
+/* ─────────────────────────────────────────
    BUILDER — LINK
-─────────────────────────────────────────── */
+───────────────────────────────────────── */
 function generateLink() {
   if (!clocks.length) { alert('Add at least one clock first.'); return; }
 
   const cfg = {
-    v:       2,
+    v:       3,
     title:   document.getElementById('cfgTitle').value.trim(),
     biz:     bizOn,
     bizFrom: parseInt(document.getElementById('bizFrom').value),
@@ -1159,15 +1112,13 @@ function copyLink() {
   });
 }
 
-function openDash() {
-  if (genUrl) window.open(genUrl, '_blank');
-}
+function openDash() { if (genUrl) window.open(genUrl, '_blank'); }
 
-/* ───────────────────────────────────────────
+/* ─────────────────────────────────────────
    DISPLAY MODE
-─────────────────────────────────────────── */
+───────────────────────────────────────── */
 function initDisplay(raw) {
-  // Backwards compat: v1 was plain array
+  // Backwards compat: v1/v2 formats
   const cfg = Array.isArray(raw)
     ? { v: 1, title: '', biz: false, bizFrom: 9, bizTo: 17, clocks: raw }
     : raw;
@@ -1176,38 +1127,46 @@ function initDisplay(raw) {
   document.body.style.overflow = 'hidden';
   document.title = cfg.title ? `${cfg.title} · TZ Board` : 'TZ Board';
 
-  document.getElementById('d-title').textContent = (cfg.title || 'TZ Board').toUpperCase();
+  // Header
+  if (cfg.title) {
+    document.getElementById('d-company').textContent = cfg.title.toUpperCase();
+    document.getElementById('d-sep-el').style.display = '';
+  }
 
+  // Grid
   const grid = document.getElementById('d-grid');
   const n    = Math.min(cfg.clocks.length, 8);
   grid.className = `n${n}`;
 
   cfg.clocks.slice(0, 8).forEach(item => {
-    const tz   = esc(item.t);
+    const tz  = item.t;
+    const ca  = accentColor(tz);
     const card = document.createElement('div');
     card.className = 'tz-card';
+    card.style.setProperty('--ca', ca);
+
     card.innerHTML = `
-      ${cfg.biz ? `
-        <div class="tz-status">
-          <div class="s-dot" data-tz="${tz}" data-p="sdot"></div>
-          <span class="s-txt" data-tz="${tz}" data-p="stxt"></span>
-        </div>` : ''}
       <div class="tz-label">${esc(item.l)}</div>
       <div class="tz-time-row">
-        <div class="tz-time">
-          <span data-tz="${tz}" data-p="h"></span><span class="sep">:</span><span data-tz="${tz}" data-p="m"></span><span class="sep">:</span><span data-tz="${tz}" data-p="s"></span>
-        </div>
-        <div class="tz-ampm" data-tz="${tz}" data-p="ampm"></div>
+        <span class="t-main" data-tz="${esc(tz)}" data-p="hm"></span>
+        <span class="t-sec"  data-tz="${esc(tz)}" data-p="s"></span>
+        <span class="t-ampm" data-tz="${esc(tz)}" data-p="ampm"></span>
       </div>
-      <div class="tz-date" data-tz="${tz}" data-p="date"></div>
+      <div class="tz-bottom">
+        <span class="tz-offset" data-tz="${esc(tz)}" data-p="offset"></span>
+        ${cfg.biz ? `
+          <div class="tz-biz">
+            <div class="biz-dot" data-tz="${esc(tz)}" data-p="bdot"></div>
+            <span class="biz-txt" data-tz="${esc(tz)}" data-p="btxt"></span>
+          </div>` : ''}
+      </div>
     `;
     grid.appendChild(card);
   });
 
-  const display = document.getElementById('display');
-  display.style.display = 'flex';
-
+  document.getElementById('display').style.display = 'flex';
   window._cfg = cfg;
+
   updateHeader();
   tick();
   setInterval(tick, 1000);
@@ -1220,72 +1179,73 @@ function updateHeader() {
 }
 
 function tick() {
-  const cfg      = window._cfg;
-  const isEven   = new Date().getSeconds() % 2 === 0;
-  const localDay = localWeekday();
+  const cfg    = window._cfg;
+  const isEven = new Date().getSeconds() % 2 === 0;
 
-  // Blink colons
-  document.querySelectorAll('.sep').forEach(el => {
-    el.style.opacity = isEven ? '1' : '0.15';
-  });
-
-  // Update all data-p elements
   document.querySelectorAll('[data-tz][data-p]').forEach(el => {
     const tz = el.dataset.tz;
     const p  = el.dataset.p;
     const t  = splitTime(fmtTime(tz));
 
     switch (p) {
-      case 'h':    el.textContent = t.h;    break;
-      case 'm':    el.textContent = t.m;    break;
-      case 's':    el.textContent = t.s;    break;
-      case 'ampm': el.textContent = t.ampm; break;
-      case 'date': {
-        el.textContent = fmtDate(tz);
-        el.classList.toggle('diff-day', tzWeekday(tz) !== localDay);
+      case 'hm':
+        el.textContent = `${t.h}:${t.m}`;
+        break;
+      case 's':
+        el.textContent = `:${t.s}`;
+        el.style.opacity = isEven ? '1' : '0.3';
+        break;
+      case 'ampm':
+        el.textContent = t.ampm;
+        break;
+      case 'offset':
+        if (!el._offset) el._offset = utcOffset(tz);
+        el.textContent = el._offset;
+        break;
+      case 'bdot': {
+        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
+        el.className = `biz-dot ${st}`;
         break;
       }
-      case 'sdot': {
+      case 'btxt': {
         const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
-        el.className = `s-dot ${st}`;
-        break;
-      }
-      case 'stxt': {
-        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
-        el.className = `s-txt ${st}`;
-        el.textContent = { open: 'Open', edge: 'Edge', closed: 'Closed', weekend: 'Weekend' }[st] || '';
+        el.className = `biz-txt ${st}`;
+        el.textContent = { open: 'Open', edge: 'Early/Late', closed: 'Closed', weekend: 'Weekend' }[st] || '';
         break;
       }
     }
   });
 }
 
-/* ───────────────────────────────────────────
+/* ─────────────────────────────────────────
    UTIL
-─────────────────────────────────────────── */
+───────────────────────────────────────── */
 function esc(s) {
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ───────────────────────────────────────────
+function decode(d) {
+  const b64    = d.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = b64 + '=='.slice(0, (4 - b64.length % 4) % 4);
+  const bytes  = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+/* ─────────────────────────────────────────
    INIT
-─────────────────────────────────────────── */
+───────────────────────────────────────── */
 (function init() {
   const d = new URLSearchParams(location.search).get('d');
   if (d) {
     try {
-      const b64     = d.replace(/-/g, '+').replace(/_/g, '/');
-      const padded  = b64 + '=='.slice(0, (4 - b64.length % 4) % 4);
-      const bytes   = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
-      const cfg     = JSON.parse(new TextDecoder().decode(bytes));
-      initDisplay(cfg);
+      initDisplay(decode(d));
     } catch {
       document.body.innerHTML = `
-        <div style="padding:60px;font-family:system-ui;background:#060a14;min-height:100vh;color:#ff3d57">
+        <div style="padding:60px;font-family:system-ui;background:#07090f;min-height:100vh;color:#ff4060">
           Invalid dashboard link.<br><br>
-          <a href="${location.pathname}" style="color:#4a8fff">← Back to builder</a>
+          <a href="${location.pathname}" style="color:#4a8fff">Back to builder</a>
         </div>`;
     }
   } else {
