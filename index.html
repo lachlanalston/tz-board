@@ -22,8 +22,6 @@
       --t2:        #5d7099;
       --t3:        #2e3d58;
       --green:     #00d08a;
-      --amber:     #f0a000;
-      --red:       #ff4060;
       --radius:    16px;
       --gap:       12px;
     }
@@ -150,50 +148,6 @@
 
     @media (max-width: 500px) { .cfg-grid { grid-template-columns: 1fr; } }
 
-    /* Biz hours toggle */
-    .toggle-field { display: flex; flex-direction: column; gap: 5px; }
-    .toggle-field label { font-size: 0.8125rem; font-weight: 500; color: var(--t2); }
-
-    .biz-wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-
-    .toggle-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      height: 40px;
-    }
-
-    .toggle {
-      width: 38px;
-      height: 21px;
-      border-radius: 11px;
-      background: var(--card-2);
-      border: 1px solid var(--border-hi);
-      position: relative;
-      transition: background 0.2s, border-color 0.2s;
-      flex-shrink: 0;
-    }
-
-    .toggle.on { background: var(--accent); border-color: var(--accent); }
-
-    .toggle::after {
-      content: '';
-      position: absolute;
-      width: 15px; height: 15px;
-      border-radius: 50%;
-      background: #fff;
-      top: 2px; left: 2px;
-      transition: transform 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    .toggle.on::after { transform: translateX(17px); }
-
-    .toggle-txt { font-size: 0.875rem; color: var(--t2); }
-
-    .biz-times { display: flex; gap: 10px; flex: 1; min-width: 180px; }
-    .biz-times .field { flex: 1; }
 
     /* Buttons */
     .btn {
@@ -716,11 +670,8 @@
       line-height: 1.2;
     }
 
-    /* Bottom row: offset + biz status */
+    /* Bottom row: offset */
     .tz-bottom {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       margin-top: 0.35em;
       position: relative;
       z-index: 1;
@@ -740,28 +691,6 @@
       gap: 4px;
     }
 
-    .biz-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .biz-dot.open    { background: var(--green); box-shadow: 0 0 5px var(--green); }
-    .biz-dot.edge    { background: var(--amber); box-shadow: 0 0 5px var(--amber); }
-    .biz-dot.closed  { background: var(--red); opacity: 0.5; }
-    .biz-dot.weekend { background: var(--t3); }
-
-    .biz-txt {
-      font-size: calc(var(--os) * 0.9);
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .biz-txt.open    { color: var(--green); }
-    .biz-txt.edge    { color: var(--amber); }
-    .biz-txt.closed  { color: var(--t3); }
-    .biz-txt.weekend { color: var(--t3); }
 
   </style>
 </head>
@@ -778,29 +707,6 @@
     <div class="b-tagline">Professional timezone dashboard for your office TV</div>
   </div>
 
-  <!-- Settings -->
-  <div class="panel">
-    <div class="panel-label">Dashboard settings</div>
-    <div class="toggle-field">
-      <label>Business hours indicator</label>
-      <div class="biz-wrap">
-        <div class="toggle-btn" onclick="toggleBiz()">
-          <div class="toggle" id="bizToggle"></div>
-          <span class="toggle-txt" id="bizLabel">Disabled</span>
-        </div>
-        <div class="biz-times" id="bizTimes" style="display:none">
-          <div class="field">
-            <label for="bizFrom">From</label>
-            <select id="bizFrom"></select>
-          </div>
-          <div class="field">
-            <label for="bizTo">To</label>
-            <select id="bizTo"></select>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Quick add -->
   <div class="panel">
@@ -890,7 +796,6 @@ const PRESETS = [
 let clocks = [];
 let idSeq  = 0;
 let genUrl = '';
-let bizOn  = false;
 
 /* ─────────────────────────────────────────
    TIME / TZ UTILS
@@ -937,42 +842,17 @@ function accentColor(tz) {
   return '#6880aa';
 }
 
-function bizStatus(tz, sh, eh) {
-  const d = tz === 'local'
-    ? new Date()
-    : new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
-  const h = d.getHours(), day = d.getDay();
-  if (day === 0 || day === 6)          return 'weekend';
-  if (h >= sh && h < eh)              return 'open';
-  if (h === sh - 1 || h === eh)       return 'edge';
-  return 'closed';
-}
 
 /* ─────────────────────────────────────────
    BUILDER — SETUP
 ───────────────────────────────────────── */
 function initBuilder() {
-  buildHourSelects();
   buildTzSelect();
   buildChips();
   renderList();
   setInterval(refreshPreviews, 1000);
 }
 
-function buildHourSelects() {
-  ['bizFrom', 'bizTo'].forEach(id => {
-    const sel = document.getElementById(id);
-    for (let i = 0; i < 24; i++) {
-      const h = i % 12 || 12, ap = i < 12 ? 'AM' : 'PM';
-      const o = document.createElement('option');
-      o.value = i;
-      o.textContent = `${h}:00 ${ap}`;
-      if (id === 'bizFrom' && i === 9)  o.selected = true;
-      if (id === 'bizTo'   && i === 17) o.selected = true;
-      sel.appendChild(o);
-    }
-  });
-}
 
 function buildTzSelect() {
   const sel = document.getElementById('fTz');
@@ -1017,12 +897,6 @@ function buildChips() {
   });
 }
 
-function toggleBiz() {
-  bizOn = !bizOn;
-  document.getElementById('bizToggle').classList.toggle('on', bizOn);
-  document.getElementById('bizLabel').textContent = bizOn ? 'Enabled' : 'Disabled';
-  document.getElementById('bizTimes').style.display = bizOn ? 'flex' : 'none';
-}
 
 /* ─────────────────────────────────────────
    BUILDER — CLOCKS
@@ -1100,11 +974,8 @@ function generateLink() {
   if (!clocks.length) { alert('Add at least one clock first.'); return; }
 
   const cfg = {
-    v:   3,
-    biz: bizOn,
-    bizFrom: parseInt(document.getElementById('bizFrom').value),
-    bizTo:   parseInt(document.getElementById('bizTo').value),
-    clocks:  clocks.map(c => ({ l: c.label, t: c.tz })),
+    v:      3,
+    clocks: clocks.map(c => ({ l: c.label, t: c.tz })),
   };
 
   const json  = JSON.stringify(cfg);
@@ -1177,11 +1048,6 @@ function initDisplay(raw) {
       </div>
       <div class="tz-bottom">
         <span class="tz-offset" data-tz="${esc(tz)}" data-p="offset"></span>
-        ${cfg.biz ? `
-          <div class="tz-biz">
-            <div class="biz-dot" data-tz="${esc(tz)}" data-p="bdot"></div>
-            <span class="biz-txt" data-tz="${esc(tz)}" data-p="btxt"></span>
-          </div>` : ''}
       </div>
     `;
     grid.appendChild(card);
@@ -1226,19 +1092,6 @@ function tick() {
         if (!el._offset) el._offset = utcOffset(tz);
         el.textContent = el._offset;
         break;
-      case 'bdot': {
-        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
-        el.className = `biz-dot ${st}`;
-        el.style.display = (st === 'closed' || st === 'weekend') ? 'none' : '';
-        break;
-      }
-      case 'btxt': {
-        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
-        el.className = `biz-txt ${st}`;
-        el.textContent = { open: 'Open', edge: 'Early/Late' }[st] || '';
-        el.style.display = (st === 'closed' || st === 'weekend') ? 'none' : '';
-        break;
-      }
     }
   });
 }
