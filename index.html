@@ -1025,7 +1025,16 @@ function buildTzSelect() {
 
   populate('');
 
-  search.addEventListener('input', () => populate(search.value));
+  search.addEventListener('input', () => {
+    populate(search.value);
+    if (!search.value.trim()) return;
+    const opts = [...sel.options];
+    const idx  = opts.findIndex(o => o.value !== '__custom__');
+    if (idx < 0) return;
+    sel.selectedIndex = idx;
+    const lbl = document.getElementById('fLabel');
+    if (!lbl.value.trim()) lbl.value = opts[idx].textContent;
+  });
 
   sel.addEventListener('change', () => {
     if (sel.value === '__custom__') {
@@ -1040,8 +1049,8 @@ function buildTzSelect() {
     }
     const lbl = document.getElementById('fLabel');
     if (!lbl.value.trim()) {
-      const p = PRESETS.find(x => x.tz === sel.value);
-      if (p) lbl.value = p.label;
+      const opt = sel.options[sel.selectedIndex];
+      if (opt && opt.value !== '__custom__') lbl.value = opt.textContent;
     }
   });
 }
