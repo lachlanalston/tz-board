@@ -973,15 +973,11 @@ function refreshPreviews() {
 function generateLink() {
   if (!clocks.length) { alert('Add at least one clock first.'); return; }
 
-  const cfg = {
-    v:      3,
-    clocks: clocks.map(c => ({ l: c.label, t: c.tz })),
-  };
-
-  const json  = JSON.stringify(cfg);
-  const bytes = new TextEncoder().encode(json);
-  const b64   = btoa(String.fromCharCode(...bytes));
-  const enc   = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  // Compact format: "label|tz,label|tz,..." — ~40% shorter than JSON
+  const compact = clocks.map(c => `${c.label}|${c.tz}`).join(',');
+  const bytes   = new TextEncoder().encode(compact);
+  const b64     = btoa(String.fromCharCode(...bytes));
+  const enc     = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   genUrl = `${location.origin}${location.pathname}?d=${enc}`;
 
   const box = document.getElementById('genLink');
@@ -1109,7 +1105,21 @@ function decode(d) {
   const b64    = d.replace(/-/g, '+').replace(/_/g, '/');
   const padded = b64 + '=='.slice(0, (4 - b64.length % 4) % 4);
   const bytes  = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
-  return JSON.parse(new TextDecoder().decode(bytes));
+  const str    = new TextDecoder().decode(bytes);
+
+  // Legacy JSON format (v1/v2/v3)
+  if (str.startsWith('{') || str.startsWith('[')) {
+    const parsed = JSON.parse(str);
+    const clocks = Array.isArray(parsed) ? parsed : parsed.clocks;
+    return { clocks };
+  }
+
+  // Compact format: "label|tz,label|tz,..."
+  const clocks = str.split(',').map(entry => {
+    const pipe = entry.indexOf('|');
+    return { l: entry.slice(0, pipe), t: entry.slice(pipe + 1) };
+  });
+  return { clocks };
 }
 
 /* ─────────────────────────────────────────
