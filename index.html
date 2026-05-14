@@ -503,6 +503,30 @@
       letter-spacing: 0.04em;
     }
 
+    #fs-btn {
+      position: fixed;
+      bottom: 14px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--t3);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s, background 0.15s, color 0.15s;
+      z-index: 700;
+      font-size: 14px;
+    }
+
+    #display:hover ~ #fs-btn,
+    #fs-btn:hover { opacity: 1; }
+    #fs-btn:hover { background: rgba(255,255,255,0.1); color: var(--t1); }
+
     /* Grid */
     #d-grid {
       flex: 1;
@@ -833,6 +857,7 @@
   </div>
   <div id="d-grid"></div>
 </div>
+<button id="fs-btn" onclick="toggleFullscreen()" title="Toggle fullscreen">⛶</button>
 
 <script>
 'use strict';
@@ -1105,6 +1130,19 @@ function copyLink() {
 
 function openDash() { if (genUrl) window.open(genUrl, '_blank'); }
 
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('fs-btn');
+  if (btn) btn.textContent = document.fullscreenElement ? '✕' : '⛶';
+});
+
 /* ─────────────────────────────────────────
    DISPLAY MODE
 ───────────────────────────────────────── */
@@ -1150,6 +1188,7 @@ function initDisplay(raw) {
   });
 
   document.getElementById('display').style.display = 'flex';
+  document.getElementById('fs-btn').style.display = 'flex';
   window._cfg = cfg;
 
   updateHeader();
