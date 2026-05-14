@@ -6,636 +6,1000 @@
   <title>TZ Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:           #080c14;
-      --surface:      #0f1623;
-      --surface-2:    #1a2234;
-      --border:       #1e2d45;
-      --border-hi:    #2a3f5f;
-      --accent:       #4f8ef7;
-      --accent-dark:  #1e3a6e;
-      --text:         #e8edf5;
-      --text-2:       #8899bb;
-      --text-3:       #4a5a7a;
-      --success:      #22c55e;
-      --danger-bg:    #7f1d1d;
-      --danger-text:  #ef4444;
+      --bg:          #060a14;
+      --card:        #0b1120;
+      --card-2:      #0e1628;
+      --border:      rgba(100, 150, 255, 0.09);
+      --border-hi:   rgba(100, 150, 255, 0.22);
+      --accent:      #4a8fff;
+      --accent-glow: rgba(74, 143, 255, 0.18);
+      --t1:          #eef2ff;
+      --t2:          #6880aa;
+      --t3:          #38496a;
+      --green:       #00c878;
+      --amber:       #f5a000;
+      --red:         #ff3d57;
+      --radius:      18px;
+      --gap:         13px;
     }
 
     body {
       background: var(--bg);
-      color: var(--text);
+      color: var(--t1);
       font-family: 'Inter', system-ui, sans-serif;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════════════════
        BUILDER
-    ══════════════════════════════════════ */
+    ══════════════════════════════════════════ */
 
     #builder {
-      max-width: 740px;
+      max-width: 760px;
       margin: 0 auto;
-      padding: 48px 20px 80px;
+      padding: 52px 20px 80px;
     }
 
-    .b-logo {
+    /* Brand */
+    .b-brand {
       text-align: center;
-      margin-bottom: 44px;
+      margin-bottom: 48px;
     }
 
-    .b-logo h1 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-    }
-
-    .b-logo h1 em {
-      color: var(--accent);
-      font-style: normal;
-    }
-
-    .b-logo p {
-      color: var(--text-2);
-      font-size: 0.9375rem;
-      margin-top: 6px;
-    }
-
-    .section-label {
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-3);
+    .b-logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
       margin-bottom: 10px;
     }
 
-    /* Quick-add chips */
-    .quick-add { margin-bottom: 28px; }
+    .b-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #3a7ef0, #6ab0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 16px rgba(74,143,255,0.35);
+    }
 
-    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .b-logo-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
 
-    .chip {
-      padding: 5px 13px;
-      background: var(--surface);
+    .b-logo-name span { color: var(--accent); }
+
+    .b-tagline {
+      font-size: 0.9375rem;
+      color: var(--t2);
+    }
+
+    /* Panels */
+    .panel {
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .panel-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--t3);
+      margin-bottom: 14px;
+    }
+
+    /* Fields */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    .field label {
       font-size: 0.8125rem;
-      color: var(--text-2);
-      cursor: pointer;
-      transition: background 0.12s, border-color 0.12s, color 0.12s;
-      font-family: inherit;
-    }
-
-    .chip:hover {
-      background: var(--surface-2);
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    /* Add form */
-    .add-form {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 28px;
-    }
-
-    .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
-
-    .form-field { flex: 1; min-width: 160px; }
-
-    .form-field label {
-      display: block;
-      font-size: 0.8125rem;
-      color: var(--text-2);
-      margin-bottom: 6px;
       font-weight: 500;
+      color: var(--t2);
     }
 
-    .form-field input,
-    .form-field select {
-      width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
+    .field input,
+    .field select {
+      background: var(--card-2);
+      border: 1px solid var(--border-hi);
+      border-radius: 9px;
+      color: var(--t1);
       padding: 10px 13px;
       font-size: 0.9375rem;
       font-family: 'Inter', system-ui, sans-serif;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .form-field input:focus,
-    .form-field select:focus { border-color: var(--accent); }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
 
-    .form-field select {
+    .field select {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%238899bb' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='none' stroke='%236880aa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 34px;
+      background-position: right 13px center;
+      padding-right: 36px;
       cursor: pointer;
     }
 
-    .form-field select option { background: #1a2234; }
+    .field select option { background: #0e1628; }
 
-    .btn-add {
-      padding: 10px 22px;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      font-family: inherit;
+    /* Dashboard config */
+    .cfg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 520px) { .cfg-grid { grid-template-columns: 1fr; } }
+
+    /* Biz hours toggle */
+    .biz-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-field { display: flex; flex-direction: column; gap: 6px; }
+
+    .toggle-field label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--t2);
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 9px;
       cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.12s, transform 0.1s;
+      height: 42px;
+    }
+
+    .toggle {
+      width: 40px;
+      height: 22px;
+      border-radius: 11px;
+      background: var(--card-2);
+      border: 1px solid var(--border-hi);
+      position: relative;
+      transition: background 0.2s, border-color 0.2s;
       flex-shrink: 0;
     }
 
-    .btn-add:hover { background: #3a7ae8; }
-    .btn-add:active { transform: scale(0.97); }
+    .toggle.on { background: var(--accent); border-color: var(--accent); }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+    }
+
+    .toggle.on::after { transform: translateX(18px); }
+
+    .toggle-text {
+      font-size: 0.875rem;
+      color: var(--t2);
+    }
+
+    .biz-time-fields {
+      display: flex;
+      gap: 12px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .biz-time-fields .field { flex: 1; }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 9px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      font-family: 'Inter', system-ui, sans-serif;
+      cursor: pointer;
+      transition: background 0.12s, box-shadow 0.12s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #3a7ef0;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-ghost {
+      background: var(--card-2);
+      color: var(--t2);
+      border: 1px solid var(--border-hi);
+    }
+
+    .btn-ghost:hover { color: var(--t1); background: var(--border-hi); }
+
+    /* Quick add */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .chip {
+      padding: 5px 14px;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      color: var(--t2);
+      cursor: pointer;
+      font-family: 'Inter', system-ui, sans-serif;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+
+    .chip:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--t1);
+    }
+
+    /* Add form */
+    .add-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .add-row .field { flex: 1; min-width: 150px; }
 
     /* Clock list */
-    .list-header {
+    .list-head {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 8px;
       margin-bottom: 10px;
     }
 
-    .list-count {
-      font-size: 0.8125rem;
-      color: var(--text-3);
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
+    .list-head-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .list-badge {
+      padding: 1px 8px;
+      background: var(--card-2);
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      font-size: 0.75rem;
+      color: var(--t3);
     }
 
     .clock-list {
       display: flex;
       flex-direction: column;
       gap: 7px;
-      margin-bottom: 28px;
-      min-height: 56px;
+      margin-bottom: 20px;
     }
 
     .empty-hint {
-      padding: 28px;
+      padding: 30px;
       text-align: center;
-      color: var(--text-3);
-      background: var(--surface);
-      border: 1px dashed var(--border);
+      color: var(--t3);
+      border: 1px dashed var(--border-hi);
       border-radius: 12px;
       font-size: 0.9375rem;
     }
 
-    .clock-item {
-      background: var(--surface);
+    .ci {
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 11px 14px;
+      border-radius: 11px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
+      transition: border-color 0.15s;
+    }
+
+    .ci:hover { border-color: var(--border-hi); }
+
+    .ci-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--card-2);
+      border: 1px solid var(--border-hi);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--t3);
+      font-weight: 600;
+      flex-shrink: 0;
     }
 
     .ci-info { flex: 1; min-width: 0; }
 
     .ci-label {
-      font-weight: 600;
       font-size: 0.9375rem;
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .ci-tz {
-      font-size: 0.8rem;
-      color: var(--text-3);
-      margin-top: 2px;
-    }
+    .ci-tz { font-size: 0.8rem; color: var(--t3); margin-top: 2px; }
 
     .ci-preview {
-      font-family: 'JetBrains Mono', monospace;
       font-size: 0.9375rem;
+      font-weight: 500;
+      font-feature-settings: "tnum";
       color: var(--accent);
-      min-width: 100px;
+      min-width: 110px;
       text-align: right;
       flex-shrink: 0;
     }
 
     .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
-    .icon-btn {
+    .ib {
       width: 28px;
       height: 28px;
-      background: var(--surface-2);
+      background: var(--card-2);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text-2);
-      font-size: 0.8125rem;
+      border-radius: 7px;
+      color: var(--t2);
+      font-size: 0.8rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Inter', system-ui, sans-serif;
       transition: background 0.12s, color 0.12s, border-color 0.12s;
-      font-family: inherit;
     }
 
-    .icon-btn:hover:not(:disabled) { background: var(--border-hi); color: var(--text); }
-    .icon-btn:disabled { opacity: 0.25; cursor: default; }
-    .icon-btn.del:hover:not(:disabled) { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-bg); }
+    .ib:hover:not(:disabled) { background: var(--border-hi); color: var(--t1); }
+    .ib:disabled { opacity: 0.2; cursor: default; }
+    .ib.del:hover:not(:disabled) {
+      background: rgba(255,61,87,0.14);
+      color: var(--red);
+      border-color: rgba(255,61,87,0.3);
+    }
 
-    /* Generate section */
-    .gen-section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+    /* Generate */
+    .gen-panel {
+      background: linear-gradient(160deg, var(--card) 0%, var(--card-2) 100%);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius);
+      padding: 28px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .gen-title { font-size: 1rem; font-weight: 600; }
-
-    .gen-sub {
-      font-size: 0.875rem;
-      color: var(--text-2);
-      margin-top: 4px;
-      margin-bottom: 18px;
+    .gen-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(74,143,255,0.08), transparent);
+      pointer-events: none;
     }
+
+    .gen-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(74,143,255,0.7), transparent);
+    }
+
+    .gen-title { font-size: 1.0625rem; font-weight: 700; margin-bottom: 5px; }
+
+    .gen-sub { font-size: 0.875rem; color: var(--t2); margin-bottom: 22px; }
 
     .btn-gen {
+      position: relative;
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       background: var(--accent);
       border: none;
-      border-radius: 10px;
+      border-radius: 11px;
       color: #fff;
       font-size: 1rem;
-      font-weight: 600;
-      font-family: inherit;
+      font-weight: 700;
+      font-family: 'Inter', system-ui, sans-serif;
       cursor: pointer;
-      transition: background 0.12s, transform 0.1s;
+      transition: background 0.12s, box-shadow 0.15s, transform 0.1s;
+      letter-spacing: -0.01em;
     }
 
-    .btn-gen:hover { background: #3a7ae8; }
+    .btn-gen:hover {
+      background: #3a7ef0;
+      box-shadow: 0 8px 28px rgba(74,143,255,0.4);
+    }
+
     .btn-gen:active { transform: scale(0.98); }
 
-    .gen-link {
+    .gen-link-box {
       display: none;
-      margin-top: 14px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-family: 'JetBrains Mono', monospace;
+      margin-top: 16px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border-hi);
+      border-radius: 9px;
+      padding: 12px 14px;
+      font-family: 'Inter', monospace;
       font-size: 0.8125rem;
-      color: var(--text-2);
+      color: var(--t2);
       word-break: break-all;
       text-align: left;
     }
 
-    .link-btns {
-      justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
+    .gen-btns {
       display: none;
-    }
-
-    .btn-outline {
-      padding: 8px 18px;
-      background: transparent;
-      border: 1px solid var(--border-hi);
-      border-radius: 8px;
-      color: var(--text-2);
-      font-size: 0.875rem;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s, border-color 0.12s;
-    }
-
-    .btn-outline:hover {
-      background: var(--surface-2);
-      color: var(--text);
-      border-color: var(--accent);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
     }
 
     .toast {
       display: block;
+      height: 1.2em;
       margin-top: 10px;
       font-size: 0.875rem;
-      color: var(--success);
+      color: var(--green);
       opacity: 0;
-      transition: opacity 0.25s;
-      min-height: 1.2em;
+      transition: opacity 0.2s;
     }
 
     .toast.show { opacity: 1; }
 
-    /* ══════════════════════════════════════
+    /* ══════════════════════════════════════════
        DISPLAY MODE
-    ══════════════════════════════════════ */
+    ══════════════════════════════════════════ */
 
     #display {
       display: none;
       width: 100vw;
       height: 100vh;
-      padding: 12px;
-      gap: 12px;
+      flex-direction: column;
       background: var(--bg);
     }
 
-    /* Grid layouts — specificity beats display:none */
-    #display.n1 {
+    /* Header */
+    #d-header {
+      height: 46px;
+      flex-shrink: 0;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6, 10, 20, 0.98);
+      gap: 16px;
+    }
+
+    .d-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .d-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: livePulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+      50%       { opacity: 0.5; box-shadow: 0 0 3px var(--green); }
+    }
+
+    #d-title {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--t2);
+    }
+
+    #d-date {
+      font-size: 0.8125rem;
+      color: var(--t3);
+      font-feature-settings: "tnum";
+      letter-spacing: 0.02em;
+    }
+
+    /* Grid */
+    #d-grid {
+      flex: 1;
+      min-height: 0;
+      padding: var(--gap);
+      gap: var(--gap);
+    }
+
+    #d-grid.n1 {
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: 1fr;
-      --ts: clamp(4rem, 14vw, 14rem);
-      --ls: clamp(1.5rem, 3.5vw, 4rem);
+      --ts: clamp(5rem, 17vw, 17rem);
+      --ls: clamp(1.5rem, 3.8vw, 4rem);
       --ds: clamp(0.9rem, 1.8vw, 2rem);
     }
-    #display.n2 {
+
+    #d-grid.n2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr;
-      --ts: clamp(3rem, 10vw, 10rem);
-      --ls: clamp(1.25rem, 2.8vw, 3rem);
-      --ds: clamp(0.8rem, 1.5vw, 1.75rem);
+      --ts: clamp(3rem, 11.5vw, 12rem);
+      --ls: clamp(1.2rem, 2.8vw, 3rem);
+      --ds: clamp(0.8rem, 1.5vw, 1.6rem);
     }
-    #display.n3 {
+
+    #d-grid.n3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr;
-      --ts: clamp(2.5rem, 7vw, 8rem);
-      --ls: clamp(1rem, 2.2vw, 2.5rem);
-      --ds: clamp(0.75rem, 1.2vw, 1.5rem);
+      --ts: clamp(2.5rem, 7.5vw, 8.5rem);
+      --ls: clamp(1rem, 2.2vw, 2.4rem);
+      --ds: clamp(0.75rem, 1.2vw, 1.4rem);
     }
-    #display.n4 {
+
+    #d-grid.n4 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      --ts: clamp(2rem, 7vw, 7rem);
-      --ls: clamp(1rem, 2vw, 2.25rem);
+      --ts: clamp(2.5rem, 7.5vw, 8rem);
+      --ls: clamp(1rem, 2vw, 2.2rem);
       --ds: clamp(0.7rem, 1.1vw, 1.25rem);
     }
-    /* 5 clocks: 3 top row + 2 bottom centered using 6-col grid */
-    #display.n5 {
+
+    /* 5 clocks: 3 top + 2 centered bottom (6-col trick) */
+    #d-grid.n5 {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.75rem, 5.5vw, 5.5rem);
+      --ts: clamp(2rem, 6vw, 6.5rem);
       --ls: clamp(0.875rem, 1.8vw, 2rem);
       --ds: clamp(0.65rem, 1vw, 1.1rem);
     }
-    #display.n5 .tz-card               { grid-column: span 2; }
-    #display.n5 .tz-card:nth-child(4)  { grid-column: 2 / span 2; }
-    #display.n5 .tz-card:nth-child(5)  { grid-column: 4 / span 2; }
 
-    #display.n6 {
+    #d-grid.n5 .tz-card              { grid-column: span 2; }
+    #d-grid.n5 .tz-card:nth-child(4) { grid-column: 2 / span 2; }
+    #d-grid.n5 .tz-card:nth-child(5) { grid-column: 4 / span 2; }
+
+    #d-grid.n6 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.75rem, 5.5vw, 5.5rem);
+      --ts: clamp(2rem, 6vw, 6.5rem);
       --ls: clamp(0.875rem, 1.8vw, 2rem);
       --ds: clamp(0.65rem, 1vw, 1.1rem);
     }
-    /* 7 clocks: 4 top + 3 bottom (centered via 8-col trick) */
-    #display.n7 {
+
+    /* 7 clocks: 4 top + 3 centered bottom (8-col trick) */
+    #d-grid.n7 {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.5rem, 4.5vw, 4.5rem);
-      --ls: clamp(0.75rem, 1.5vw, 1.75rem);
-      --ds: clamp(0.6rem, 0.9vw, 1rem);
+      --ts: clamp(1.5rem, 4.8vw, 5.5rem);
+      --ls: clamp(0.75rem, 1.6vw, 1.8rem);
+      --ds: clamp(0.6rem, 0.9vw, 1.05rem);
     }
-    #display.n7 .tz-card               { grid-column: span 2; }
-    #display.n7 .tz-card:nth-child(5)  { grid-column: 2 / span 2; }
-    #display.n7 .tz-card:nth-child(6)  { grid-column: 4 / span 2; }
-    #display.n7 .tz-card:nth-child(7)  { grid-column: 6 / span 2; }
 
-    #display.n8 {
+    #d-grid.n7 .tz-card              { grid-column: span 2; }
+    #d-grid.n7 .tz-card:nth-child(5) { grid-column: 2 / span 2; }
+    #d-grid.n7 .tz-card:nth-child(6) { grid-column: 4 / span 2; }
+    #d-grid.n7 .tz-card:nth-child(7) { grid-column: 6 / span 2; }
+
+    #d-grid.n8 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: 1fr 1fr;
-      --ts: clamp(1.5rem, 4.5vw, 4.5rem);
-      --ls: clamp(0.75rem, 1.5vw, 1.75rem);
-      --ds: clamp(0.6rem, 0.9vw, 1rem);
+      --ts: clamp(1.5rem, 4.8vw, 5.5rem);
+      --ls: clamp(0.75rem, 1.6vw, 1.8rem);
+      --ds: clamp(0.6rem, 0.9vw, 1.05rem);
+    }
+
+    /* Cards */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.99); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
     }
 
     .tz-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      background: linear-gradient(160deg, #0c1222 0%, #080e1a 100%);
+      border: 1px solid rgba(100,150,255,0.1);
+      border-radius: var(--radius);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      padding: 16px;
+      gap: 5px;
+      padding: 18px 16px;
       overflow: hidden;
       position: relative;
+      animation: cardIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+      box-shadow:
+        0 0 0 1px rgba(74,143,255,0.05),
+        0 24px 64px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.035);
     }
 
-    /* Accent glow bar at card top */
+    .tz-card:nth-child(1) { animation-delay: 0.04s; }
+    .tz-card:nth-child(2) { animation-delay: 0.09s; }
+    .tz-card:nth-child(3) { animation-delay: 0.14s; }
+    .tz-card:nth-child(4) { animation-delay: 0.19s; }
+    .tz-card:nth-child(5) { animation-delay: 0.24s; }
+    .tz-card:nth-child(6) { animation-delay: 0.29s; }
+    .tz-card:nth-child(7) { animation-delay: 0.34s; }
+    .tz-card:nth-child(8) { animation-delay: 0.39s; }
+
+    /* Top accent line */
+    .tz-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 5%, rgba(74,143,255,0.65) 50%, transparent 95%);
+    }
+
+    /* Subtle inner corner glow */
     .tz-card::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 35%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      border-radius: 0 0 4px 4px;
-      opacity: 0.8;
+      inset: 0;
+      border-radius: var(--radius);
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(74,143,255,0.06), transparent 70%);
+      pointer-events: none;
     }
 
+    /* Business hours status */
+    .tz-status {
+      position: absolute;
+      top: 13px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 1;
+    }
+
+    .s-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .s-dot.open    { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .s-dot.edge    { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+    .s-dot.closed  { background: var(--red);   opacity: 0.55; }
+    .s-dot.weekend { background: var(--t3); }
+
+    .s-txt {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .s-txt.open    { color: var(--green); }
+    .s-txt.edge    { color: var(--amber); }
+    .s-txt.closed  { color: var(--t3); }
+    .s-txt.weekend { color: var(--t3); }
+
+    /* Card text */
     .tz-label {
       font-size: var(--ls);
-      font-weight: 600;
-      color: var(--text-2);
-      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: var(--t2);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       text-align: center;
-      line-height: 1.2;
+      line-height: 1;
+      z-index: 1;
     }
 
     .tz-time-row {
       display: flex;
       align-items: baseline;
-      gap: 0.25em;
+      z-index: 1;
     }
 
     .tz-time {
-      font-family: 'JetBrains Mono', monospace;
       font-size: var(--ts);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.02em;
+      font-weight: 800;
+      color: var(--t1);
+      letter-spacing: -0.03em;
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
       line-height: 1;
     }
 
+    .tz-time .sep {
+      font-weight: 200;
+      color: var(--t3);
+      transition: opacity 0.12s;
+    }
+
     .tz-ampm {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: calc(var(--ts) * 0.36);
-      font-weight: 400;
+      align-self: flex-end;
+      font-size: calc(var(--ts) * 0.28);
+      font-weight: 600;
       color: var(--accent);
-      line-height: 1;
+      letter-spacing: 0.05em;
+      background: rgba(74,143,255,0.12);
+      border: 1px solid rgba(74,143,255,0.2);
+      border-radius: 5px;
+      padding: 0.18em 0.38em;
+      margin-left: 0.3em;
+      margin-bottom: 0.12em;
+      line-height: 1.3;
+      z-index: 1;
     }
 
     .tz-date {
       font-size: var(--ds);
-      color: var(--text-3);
-      letter-spacing: 0.02em;
-      margin-top: 2px;
+      color: var(--t3);
+      letter-spacing: 0.04em;
+      text-align: center;
+      z-index: 1;
     }
 
-    /* Back-to-builder link in display mode */
-    .display-edit-link {
-      position: fixed;
-      bottom: 12px;
-      right: 14px;
-      font-size: 0.75rem;
-      color: var(--text-3);
-      text-decoration: none;
-      opacity: 0;
-      transition: opacity 0.3s;
-      z-index: 10;
-    }
+    .tz-date.diff-day { color: var(--amber); }
 
-    #display:hover ~ .display-edit-link,
-    .display-edit-link:hover { opacity: 1; }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════ BUILDER ═══════════════ -->
+<!-- ════════════════════ BUILDER ════════════════════ -->
 <div id="builder">
 
-  <div class="b-logo">
-    <h1>TZ <em>Board</em></h1>
-    <p>Timezone dashboard for your office TV</p>
+  <div class="b-brand">
+    <div class="b-logo-wrap">
+      <div class="b-logo-icon">🕐</div>
+      <div class="b-logo-name">TZ <span>Board</span></div>
+    </div>
+    <div class="b-tagline">Professional timezone dashboard for your office TV</div>
   </div>
 
-  <div class="quick-add">
-    <div class="section-label">Quick add</div>
-    <div class="chip-row" id="chipRow"></div>
-  </div>
+  <!-- Dashboard settings -->
+  <div class="panel">
+    <div class="panel-label">Dashboard settings</div>
+    <div class="cfg-grid">
 
-  <div class="add-form">
-    <div class="form-row">
-      <div class="form-field">
-        <label for="fLabel">Display label</label>
-        <input type="text" id="fLabel" placeholder="e.g. New York, Client HQ…" autocomplete="off">
+      <div class="field">
+        <label for="cfgTitle">Company / display name</label>
+        <input type="text" id="cfgTitle" placeholder="e.g. Alston IT" autocomplete="off">
       </div>
-      <div class="form-field">
-        <label for="fTz">Timezone</label>
-        <select id="fTz"></select>
+
+      <div class="toggle-field">
+        <label>Business hours indicator</label>
+        <div class="biz-row">
+          <div class="toggle-wrap" onclick="toggleBiz()">
+            <div class="toggle" id="bizToggle"></div>
+            <span class="toggle-text" id="bizLabel">Disabled</span>
+          </div>
+          <div class="biz-time-fields" id="bizTimeFields" style="display:none">
+            <div class="field">
+              <label for="bizFrom">From</label>
+              <select id="bizFrom"></select>
+            </div>
+            <div class="field">
+              <label for="bizTo">To</label>
+              <select id="bizTo"></select>
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="btn-add" onclick="addClock()">+ Add</button>
+
     </div>
   </div>
 
-  <div class="list-header">
-    <div class="section-label" style="margin-bottom:0">Clocks</div>
-    <span class="list-count" id="clockCount"></span>
+  <!-- Quick add -->
+  <div class="panel">
+    <div class="panel-label">Quick add</div>
+    <div class="chip-row" id="chipRow"></div>
+  </div>
+
+  <!-- Custom add -->
+  <div class="panel">
+    <div class="panel-label">Custom clock</div>
+    <div class="add-row">
+      <div class="field">
+        <label for="fLabel">Label</label>
+        <input type="text" id="fLabel" placeholder="e.g. Client HQ, New York…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="fTz">Timezone</label>
+        <select id="fTz"></select>
+      </div>
+      <button class="btn btn-primary" onclick="addClock()" style="margin-top:auto">+ Add</button>
+    </div>
+  </div>
+
+  <!-- Clock list -->
+  <div class="list-head">
+    <div class="list-head-label">Clocks</div>
+    <div class="list-badge" id="listBadge" style="display:none"></div>
   </div>
   <div class="clock-list" id="clockList"></div>
 
-  <div class="gen-section">
+  <!-- Generate -->
+  <div class="gen-panel">
     <div class="gen-title">Ready to go live?</div>
-    <div class="gen-sub">Generates a shareable link — open on any TV or browser.</div>
+    <div class="gen-sub">Generates a permanent shareable link — open on any TV or browser.</div>
     <button class="btn-gen" onclick="generateLink()">Generate Dashboard Link</button>
-    <div class="gen-link" id="genLink"></div>
-    <div class="link-btns" id="linkBtns">
-      <button class="btn-outline" onclick="copyLink()">Copy link</button>
-      <button class="btn-outline" onclick="openDash()">Open dashboard →</button>
+    <div class="gen-link-box" id="genLink"></div>
+    <div class="gen-btns" id="genBtns">
+      <button class="btn btn-ghost" onclick="copyLink()">Copy link</button>
+      <button class="btn btn-primary" onclick="openDash()">Open dashboard →</button>
     </div>
     <span class="toast" id="toast">Copied to clipboard!</span>
   </div>
 
 </div>
 
-<!-- ═══════════════ DISPLAY ═══════════════ -->
-<div id="display"></div>
-<a class="display-edit-link" id="editLink" href="/">← edit</a>
+<!-- ════════════════════ DISPLAY ════════════════════ -->
+<div id="display">
+  <div id="d-header">
+    <div class="d-header-left">
+      <div class="d-live-dot"></div>
+      <div id="d-title">TZ BOARD</div>
+    </div>
+    <div id="d-date"></div>
+  </div>
+  <div id="d-grid"></div>
+</div>
 
 <script>
 'use strict';
 
-/* ─────────────────────────────────
-   PRESET TIMEZONES
-───────────────────────────────── */
+/* ───────────────────────────────────────────
+   DATA
+─────────────────────────────────────────── */
 const PRESETS = [
-  { label: 'Local',       tz: 'local',                flag: '🏠' },
-  { label: 'New York',    tz: 'America/New_York',      flag: '🗽' },
-  { label: 'Chicago',     tz: 'America/Chicago',       flag: '🌆' },
-  { label: 'Denver',      tz: 'America/Denver',        flag: '⛰️' },
-  { label: 'Los Angeles', tz: 'America/Los_Angeles',   flag: '🌴' },
-  { label: 'Las Vegas',   tz: 'America/Los_Angeles',   flag: '🎰' },
-  { label: 'London',      tz: 'Europe/London',         flag: '🇬🇧' },
-  { label: 'Amsterdam',   tz: 'Europe/Amsterdam',      flag: '🇳🇱' },
-  { label: 'Dubai',       tz: 'Asia/Dubai',            flag: '🇦🇪' },
-  { label: 'Mumbai',      tz: 'Asia/Kolkata',          flag: '🇮🇳' },
-  { label: 'Singapore',   tz: 'Asia/Singapore',        flag: '🇸🇬' },
-  { label: 'Tokyo',       tz: 'Asia/Tokyo',            flag: '🇯🇵' },
-  { label: 'Sydney',      tz: 'Australia/Sydney',      flag: '🇦🇺' },
-  { label: 'Melbourne',   tz: 'Australia/Melbourne',   flag: '🇦🇺' },
-  { label: 'Perth',       tz: 'Australia/Perth',       flag: '🇦🇺' },
-  { label: 'Auckland',    tz: 'Pacific/Auckland',      flag: '🇳🇿' },
+  { label: 'Local',        tz: 'local',                flag: '🏠' },
+  { label: 'New York',     tz: 'America/New_York',      flag: '🗽' },
+  { label: 'Chicago',      tz: 'America/Chicago',       flag: '🌆' },
+  { label: 'Denver',       tz: 'America/Denver',        flag: '⛰️'  },
+  { label: 'Los Angeles',  tz: 'America/Los_Angeles',   flag: '🌴' },
+  { label: 'Las Vegas',    tz: 'America/Los_Angeles',   flag: '🎰' },
+  { label: 'London',       tz: 'Europe/London',         flag: '🇬🇧' },
+  { label: 'Amsterdam',    tz: 'Europe/Amsterdam',      flag: '🇳🇱' },
+  { label: 'Dubai',        tz: 'Asia/Dubai',            flag: '🇦🇪' },
+  { label: 'Mumbai',       tz: 'Asia/Kolkata',          flag: '🇮🇳' },
+  { label: 'Singapore',    tz: 'Asia/Singapore',        flag: '🇸🇬' },
+  { label: 'Tokyo',        tz: 'Asia/Tokyo',            flag: '🇯🇵' },
+  { label: 'Sydney',       tz: 'Australia/Sydney',      flag: '🇦🇺' },
+  { label: 'Melbourne',    tz: 'Australia/Melbourne',   flag: '🇦🇺' },
+  { label: 'Perth',        tz: 'Australia/Perth',       flag: '🇦🇺' },
+  { label: 'Auckland',     tz: 'Pacific/Auckland',      flag: '🇳🇿' },
 ];
 
-/* ─────────────────────────────────
+/* ───────────────────────────────────────────
    STATE
-───────────────────────────────── */
-let clocks = [];
-let idSeq = 0;
-let generatedUrl = '';
+─────────────────────────────────────────── */
+let clocks  = [];
+let idSeq   = 0;
+let genUrl  = '';
+let bizOn   = false;
 
-/* ─────────────────────────────────
-   TIME HELPERS
-───────────────────────────────── */
-function timeStr(tz) {
-  const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+/* ───────────────────────────────────────────
+   TIME UTILS
+─────────────────────────────────────────── */
+function fmtTime(tz) {
+  const o = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
   return tz === 'local'
-    ? new Date().toLocaleTimeString('en-US', opts)
-    : new Date().toLocaleTimeString('en-US', { ...opts, timeZone: tz });
+    ? new Date().toLocaleTimeString('en-US', o)
+    : new Date().toLocaleTimeString('en-US', { ...o, timeZone: tz });
 }
 
-function dateStr(tz) {
-  const opts = { weekday: 'long', month: 'long', day: 'numeric' };
+function fmtDate(tz) {
+  const o = { weekday: 'long', month: 'long', day: 'numeric' };
   return tz === 'local'
-    ? new Date().toLocaleDateString('en-US', opts)
-    : new Date().toLocaleDateString('en-US', { ...opts, timeZone: tz });
+    ? new Date().toLocaleDateString('en-US', o)
+    : new Date().toLocaleDateString('en-US', { ...o, timeZone: tz });
+}
+
+function fmtHeaderDate() {
+  return new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
 }
 
 function splitTime(s) {
-  const sp = s.split(' ');
-  return { hms: sp[0], ampm: sp[1] || '' };
+  const [hms, ampm] = s.split(' ');
+  const [h, m, sec] = hms.split(':');
+  return { h, m, s: sec, ampm: ampm || '' };
 }
 
-/* ─────────────────────────────────
-   BUILDER — SETUP
-───────────────────────────────── */
+function localWeekday() {
+  return new Date().toLocaleDateString('en-US', { weekday: 'long' });
+}
+
+function tzWeekday(tz) {
+  return tz === 'local'
+    ? localWeekday()
+    : new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: tz });
+}
+
+function bizStatus(tz, sh, eh) {
+  const d = tz === 'local'
+    ? new Date()
+    : new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
+  const h   = d.getHours();
+  const day = d.getDay();
+  if (day === 0 || day === 6)          return 'weekend';
+  if (h >= sh && h < eh)              return 'open';
+  if ((h === sh - 1) || (h === eh))   return 'edge';
+  return 'closed';
+}
+
+/* ───────────────────────────────────────────
+   BUILDER — INIT
+─────────────────────────────────────────── */
 function initBuilder() {
-  buildSelect();
+  buildHourSelects();
+  buildTzSelect();
   buildChips();
   renderList();
   setInterval(refreshPreviews, 1000);
 }
 
-function buildSelect() {
+function buildHourSelects() {
+  ['bizFrom', 'bizTo'].forEach(id => {
+    const sel = document.getElementById(id);
+    for (let i = 0; i < 24; i++) {
+      const h  = i % 12 || 12;
+      const ap = i < 12 ? 'AM' : 'PM';
+      const o  = document.createElement('option');
+      o.value = i;
+      o.textContent = `${h}:00 ${ap}`;
+      if (id === 'bizFrom' && i === 9)  o.selected = true;
+      if (id === 'bizTo'   && i === 17) o.selected = true;
+      sel.appendChild(o);
+    }
+  });
+}
+
+function buildTzSelect() {
   const sel = document.getElementById('fTz');
   PRESETS.forEach(p => {
     const o = document.createElement('option');
@@ -643,25 +1007,24 @@ function buildSelect() {
     o.textContent = `${p.flag}  ${p.label}`;
     sel.appendChild(o);
   });
-  const custom = document.createElement('option');
-  custom.value = '__custom__';
-  custom.textContent = '⚙️  Custom IANA timezone…';
-  sel.appendChild(custom);
+  const c = document.createElement('option');
+  c.value = '__custom__';
+  c.textContent = '⚙️  Custom IANA timezone…';
+  sel.appendChild(c);
 
   sel.addEventListener('change', () => {
     if (sel.value === '__custom__') {
-      const val = prompt('Enter IANA timezone (e.g. Asia/Kolkata):');
-      if (val && val.trim()) {
+      const v = prompt('Enter IANA timezone (e.g. Asia/Kolkata):');
+      if (v && v.trim()) {
         const o = document.createElement('option');
-        o.value = val.trim();
-        o.textContent = val.trim();
+        o.value = v.trim();
+        o.textContent = v.trim();
         o.selected = true;
         sel.insertBefore(o, sel.lastElementChild);
       } else {
         sel.value = PRESETS[0].tz;
       }
     }
-    // Auto-fill blank label
     const lbl = document.getElementById('fLabel');
     if (!lbl.value.trim()) {
       const p = PRESETS.find(x => x.tz === sel.value);
@@ -673,17 +1036,24 @@ function buildSelect() {
 function buildChips() {
   const row = document.getElementById('chipRow');
   PRESETS.forEach(p => {
-    const btn = document.createElement('button');
-    btn.className = 'chip';
-    btn.textContent = `${p.flag} ${p.label}`;
-    btn.onclick = () => pushClock(`${p.flag} ${p.label}`, p.tz);
-    row.appendChild(btn);
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = `${p.flag} ${p.label}`;
+    b.onclick = () => pushClock(`${p.flag} ${p.label}`, p.tz);
+    row.appendChild(b);
   });
 }
 
-/* ─────────────────────────────────
-   BUILDER — CLOCK CRUD
-───────────────────────────────── */
+function toggleBiz() {
+  bizOn = !bizOn;
+  document.getElementById('bizToggle').classList.toggle('on', bizOn);
+  document.getElementById('bizLabel').textContent = bizOn ? 'Enabled' : 'Disabled';
+  document.getElementById('bizTimeFields').style.display = bizOn ? 'flex' : 'none';
+}
+
+/* ───────────────────────────────────────────
+   BUILDER — CLOCKS
+─────────────────────────────────────────── */
 function addClock() {
   const label = document.getElementById('fLabel').value.trim();
   const tz    = document.getElementById('fTz').value;
@@ -712,25 +1082,30 @@ function moveClock(id, delta) {
 }
 
 function renderList() {
-  const el = document.getElementById('clockList');
-  document.getElementById('clockCount').textContent = clocks.length ? `(${clocks.length})` : '';
+  const el    = document.getElementById('clockList');
+  const badge = document.getElementById('listBadge');
 
   if (!clocks.length) {
+    badge.style.display = 'none';
     el.innerHTML = '<div class="empty-hint">No clocks yet — use Quick Add or the form above.</div>';
     return;
   }
 
+  badge.style.display = '';
+  badge.textContent = clocks.length;
+
   el.innerHTML = clocks.map((c, i) => `
-    <div class="clock-item">
+    <div class="ci">
+      <div class="ci-num">${i + 1}</div>
       <div class="ci-info">
         <div class="ci-label">${esc(c.label)}</div>
         <div class="ci-tz">${c.tz === 'local' ? 'Local browser time' : c.tz}</div>
       </div>
       <div class="ci-preview" id="prev-${c.id}">—</div>
       <div class="ci-actions">
-        <button class="icon-btn" onclick="moveClock(${c.id},-1)" ${i === 0 ? 'disabled' : ''} title="Move up">↑</button>
-        <button class="icon-btn" onclick="moveClock(${c.id}, 1)" ${i === clocks.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
-        <button class="icon-btn del" onclick="removeClock(${c.id})" title="Remove">✕</button>
+        <button class="ib" onclick="moveClock(${c.id},-1)" ${i === 0 ? 'disabled' : ''}>↑</button>
+        <button class="ib" onclick="moveClock(${c.id}, 1)" ${i === clocks.length - 1 ? 'disabled' : ''}>↓</button>
+        <button class="ib del" onclick="removeClock(${c.id})">✕</button>
       </div>
     </div>
   `).join('');
@@ -741,28 +1116,37 @@ function renderList() {
 function refreshPreviews() {
   clocks.forEach(c => {
     const el = document.getElementById(`prev-${c.id}`);
-    if (el) el.textContent = timeStr(c.tz);
+    if (el) el.textContent = fmtTime(c.tz);
   });
 }
 
-/* ─────────────────────────────────
+/* ───────────────────────────────────────────
    BUILDER — LINK
-───────────────────────────────── */
+─────────────────────────────────────────── */
 function generateLink() {
   if (!clocks.length) { alert('Add at least one clock first.'); return; }
-  const data = clocks.map(c => ({ l: c.label, t: c.tz }));
-  const enc = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  generatedUrl = `${location.origin}${location.pathname}?d=${enc}`;
 
-  const linkEl = document.getElementById('genLink');
-  linkEl.textContent = generatedUrl;
-  linkEl.style.display = 'block';
-  document.getElementById('linkBtns').style.display = 'flex';
+  const cfg = {
+    v:       2,
+    title:   document.getElementById('cfgTitle').value.trim(),
+    biz:     bizOn,
+    bizFrom: parseInt(document.getElementById('bizFrom').value),
+    bizTo:   parseInt(document.getElementById('bizTo').value),
+    clocks:  clocks.map(c => ({ l: c.label, t: c.tz })),
+  };
+
+  const enc = btoa(unescape(encodeURIComponent(JSON.stringify(cfg))));
+  genUrl = `${location.origin}${location.pathname}?d=${enc}`;
+
+  const box = document.getElementById('genLink');
+  box.textContent = genUrl;
+  box.style.display = 'block';
+  document.getElementById('genBtns').style.display = 'flex';
 }
 
 function copyLink() {
-  if (!generatedUrl) return;
-  navigator.clipboard.writeText(generatedUrl).then(() => {
+  if (!genUrl) return;
+  navigator.clipboard.writeText(genUrl).then(() => {
     const t = document.getElementById('toast');
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2000);
@@ -770,78 +1154,129 @@ function copyLink() {
 }
 
 function openDash() {
-  if (generatedUrl) window.open(generatedUrl, '_blank');
+  if (genUrl) window.open(genUrl, '_blank');
 }
 
-/* ─────────────────────────────────
+/* ───────────────────────────────────────────
    DISPLAY MODE
-───────────────────────────────── */
-function initDisplay(config) {
+─────────────────────────────────────────── */
+function initDisplay(raw) {
+  // Backwards compat: v1 was plain array
+  const cfg = Array.isArray(raw)
+    ? { v: 1, title: '', biz: false, bizFrom: 9, bizTo: 17, clocks: raw }
+    : raw;
+
   document.getElementById('builder').style.display = 'none';
   document.body.style.overflow = 'hidden';
-  document.title = 'TZ Board';
+  document.title = cfg.title ? `${cfg.title} · TZ Board` : 'TZ Board';
 
-  const n = Math.min(config.length, 8);
-  const display = document.getElementById('display');
-  display.className = `n${n}`;
+  document.getElementById('d-title').textContent = (cfg.title || 'TZ Board').toUpperCase();
 
-  config.slice(0, 8).forEach(item => {
+  const grid = document.getElementById('d-grid');
+  const n    = Math.min(cfg.clocks.length, 8);
+  grid.className = `n${n}`;
+
+  cfg.clocks.slice(0, 8).forEach(item => {
+    const tz   = esc(item.t);
     const card = document.createElement('div');
     card.className = 'tz-card';
     card.innerHTML = `
+      ${cfg.biz ? `
+        <div class="tz-status">
+          <div class="s-dot" data-tz="${tz}" data-p="sdot"></div>
+          <span class="s-txt" data-tz="${tz}" data-p="stxt"></span>
+        </div>` : ''}
       <div class="tz-label">${esc(item.l)}</div>
       <div class="tz-time-row">
-        <div class="tz-time" data-tz="${esc(item.t)}" data-p="hms"></div>
-        <div class="tz-ampm" data-tz="${esc(item.t)}" data-p="ampm"></div>
+        <div class="tz-time">
+          <span data-tz="${tz}" data-p="h"></span><span class="sep">:</span><span data-tz="${tz}" data-p="m"></span><span class="sep">:</span><span data-tz="${tz}" data-p="s"></span>
+        </div>
+        <div class="tz-ampm" data-tz="${tz}" data-p="ampm"></div>
       </div>
-      <div class="tz-date" data-tz="${esc(item.t)}" data-p="date"></div>
+      <div class="tz-date" data-tz="${tz}" data-p="date"></div>
     `;
-    display.appendChild(card);
+    grid.appendChild(card);
   });
 
-  // Edit link goes back to builder with config pre-loaded
-  document.getElementById('editLink').href = location.pathname;
+  const display = document.getElementById('display');
+  display.style.display = 'flex';
 
+  window._cfg = cfg;
+  updateHeader();
   tick();
   setInterval(tick, 1000);
+  setInterval(updateHeader, 60000);
+}
+
+function updateHeader() {
+  const el = document.getElementById('d-date');
+  if (el) el.textContent = fmtHeaderDate();
 }
 
 function tick() {
-  document.querySelectorAll('[data-p]').forEach(el => {
+  const cfg      = window._cfg;
+  const isEven   = new Date().getSeconds() % 2 === 0;
+  const localDay = localWeekday();
+
+  // Blink colons
+  document.querySelectorAll('.sep').forEach(el => {
+    el.style.opacity = isEven ? '1' : '0.15';
+  });
+
+  // Update all data-p elements
+  document.querySelectorAll('[data-tz][data-p]').forEach(el => {
     const tz = el.dataset.tz;
-    const t = splitTime(timeStr(tz));
-    if      (el.dataset.p === 'hms')  el.textContent = t.hms;
-    else if (el.dataset.p === 'ampm') el.textContent = t.ampm;
-    else if (el.dataset.p === 'date') el.textContent = dateStr(tz);
+    const p  = el.dataset.p;
+    const t  = splitTime(fmtTime(tz));
+
+    switch (p) {
+      case 'h':    el.textContent = t.h;    break;
+      case 'm':    el.textContent = t.m;    break;
+      case 's':    el.textContent = t.s;    break;
+      case 'ampm': el.textContent = t.ampm; break;
+      case 'date': {
+        el.textContent = fmtDate(tz);
+        el.classList.toggle('diff-day', tzWeekday(tz) !== localDay);
+        break;
+      }
+      case 'sdot': {
+        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
+        el.className = `s-dot ${st}`;
+        break;
+      }
+      case 'stxt': {
+        const st = bizStatus(tz, cfg.bizFrom, cfg.bizTo);
+        el.className = `s-txt ${st}`;
+        el.textContent = { open: 'Open', edge: 'Edge', closed: 'Closed', weekend: 'Weekend' }[st] || '';
+        break;
+      }
+    }
   });
 }
 
-/* ─────────────────────────────────
+/* ───────────────────────────────────────────
    UTIL
-───────────────────────────────── */
+─────────────────────────────────────────── */
 function esc(s) {
   return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ─────────────────────────────────
+/* ───────────────────────────────────────────
    INIT
-───────────────────────────────── */
+─────────────────────────────────────────── */
 (function init() {
   const d = new URLSearchParams(location.search).get('d');
   if (d) {
     try {
-      const config = JSON.parse(decodeURIComponent(escape(atob(d))));
-      if (!Array.isArray(config) || !config.length) throw new Error();
-      initDisplay(config);
+      const cfg = JSON.parse(decodeURIComponent(escape(atob(d))));
+      initDisplay(cfg);
     } catch {
       document.body.innerHTML = `
-        <div style="color:var(--danger-text);padding:48px;font-family:monospace;background:var(--bg);min-height:100vh">
-          Invalid dashboard URL.<br><br>
-          <a href="${location.pathname}" style="color:var(--accent)">← Back to builder</a>
+        <div style="padding:60px;font-family:system-ui;background:#060a14;min-height:100vh;color:#ff3d57">
+          Invalid dashboard link.<br><br>
+          <a href="${location.pathname}" style="color:#4a8fff">← Back to builder</a>
         </div>`;
     }
   } else {
