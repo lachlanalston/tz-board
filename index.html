@@ -757,27 +757,21 @@
   <!-- Settings -->
   <div class="panel">
     <div class="panel-label">Dashboard settings</div>
-    <div class="cfg-grid">
-      <div class="field">
-        <label for="cfgTitle">Company / display name</label>
-        <input type="text" id="cfgTitle" placeholder="e.g. Alston IT" autocomplete="off">
-      </div>
-      <div class="toggle-field">
-        <label>Business hours indicator</label>
-        <div class="biz-wrap">
-          <div class="toggle-btn" onclick="toggleBiz()">
-            <div class="toggle" id="bizToggle"></div>
-            <span class="toggle-txt" id="bizLabel">Disabled</span>
+    <div class="toggle-field">
+      <label>Business hours indicator</label>
+      <div class="biz-wrap">
+        <div class="toggle-btn" onclick="toggleBiz()">
+          <div class="toggle" id="bizToggle"></div>
+          <span class="toggle-txt" id="bizLabel">Disabled</span>
+        </div>
+        <div class="biz-times" id="bizTimes" style="display:none">
+          <div class="field">
+            <label for="bizFrom">From</label>
+            <select id="bizFrom"></select>
           </div>
-          <div class="biz-times" id="bizTimes" style="display:none">
-            <div class="field">
-              <label for="bizFrom">From</label>
-              <select id="bizFrom"></select>
-            </div>
-            <div class="field">
-              <label for="bizTo">To</label>
-              <select id="bizTo"></select>
-            </div>
+          <div class="field">
+            <label for="bizTo">To</label>
+            <select id="bizTo"></select>
           </div>
         </div>
       </div>
@@ -834,8 +828,6 @@
     <div class="d-hdr-left">
       <div class="d-live-dot"></div>
       <span class="d-wordmark">TZ BOARD</span>
-      <span class="d-sep" id="d-sep-el" style="display:none"> | </span>
-      <span id="d-company"></span>
     </div>
     <div id="d-date"></div>
   </div>
@@ -1083,9 +1075,8 @@ function generateLink() {
   if (!clocks.length) { alert('Add at least one clock first.'); return; }
 
   const cfg = {
-    v:       3,
-    title:   document.getElementById('cfgTitle').value.trim(),
-    biz:     bizOn,
+    v:   3,
+    biz: bizOn,
     bizFrom: parseInt(document.getElementById('bizFrom').value),
     bizTo:   parseInt(document.getElementById('bizTo').value),
     clocks:  clocks.map(c => ({ l: c.label, t: c.tz })),
@@ -1125,13 +1116,7 @@ function initDisplay(raw) {
 
   document.getElementById('builder').style.display = 'none';
   document.body.style.overflow = 'hidden';
-  document.title = cfg.title ? `${cfg.title} · TZ Board` : 'TZ Board';
-
-  // Header
-  if (cfg.title) {
-    document.getElementById('d-company').textContent = cfg.title.toUpperCase();
-    document.getElementById('d-sep-el').style.display = '';
-  }
+  document.title = 'TZ Board';
 
   // Grid
   const grid = document.getElementById('d-grid');
