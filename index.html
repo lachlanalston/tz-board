@@ -568,9 +568,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
-      gap: 0;
-      padding: 22px 28px 22px 36px;
+      justify-content: space-between;
+      padding: clamp(16px, 2.2vh, 32px) 28px clamp(16px, 2.2vh, 32px) 36px;
       overflow: hidden;
       position: relative;
       animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -615,16 +614,12 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       line-height: 1;
-      margin-bottom: 0.3em;
       position: relative;
       z-index: 1;
     }
 
-    /* Time row */
+    /* Time row — H:MM only, no inline seconds */
     .tz-time-row {
-      display: flex;
-      align-items: baseline;
-      gap: 0;
       line-height: 1;
       position: relative;
       z-index: 1;
@@ -641,38 +636,11 @@
       line-height: 1;
     }
 
-    .t-sec {
-      font-family: 'DM Mono', monospace;
-      font-size: var(--ss);
-      font-weight: 300;
-      color: var(--t3);
-      letter-spacing: -0.02em;
-      font-feature-settings: "tnum";
-      transition: opacity 0.1s;
-      line-height: 1;
-      align-self: flex-end;
-      padding-bottom: 0.06em;
-    }
-
-    .t-ampm {
-      font-family: 'Space Grotesk', system-ui, sans-serif;
-      font-size: calc(var(--ts) * 0.24);
-      font-weight: 700;
-      color: var(--ca, var(--accent));
-      letter-spacing: 0.06em;
-      background: color-mix(in srgb, var(--ca, var(--accent)) 14%, transparent);
-      border: 1px solid color-mix(in srgb, var(--ca, var(--accent)) 28%, transparent);
-      border-radius: 4px;
-      padding: 0.2em 0.4em;
-      margin-left: 0.4em;
-      align-self: flex-end;
-      margin-bottom: 0.1em;
-      line-height: 1.2;
-    }
-
-    /* Bottom row: offset */
+    /* Bottom bar: UTC offset · AM/PM · :SS */
     .tz-bottom {
-      margin-top: 0.35em;
+      display: flex;
+      align-items: center;
+      gap: 0.55em;
       position: relative;
       z-index: 1;
     }
@@ -685,6 +653,32 @@
       letter-spacing: 0.04em;
     }
 
+    .tz-sep {
+      font-size: var(--os);
+      color: var(--t3);
+      opacity: 0.5;
+      line-height: 1;
+    }
+
+    .t-ampm {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: var(--os);
+      font-weight: 700;
+      color: var(--ca, var(--accent));
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+
+    .t-sec {
+      font-family: 'DM Mono', monospace;
+      font-size: var(--os);
+      font-weight: 400;
+      color: var(--t3);
+      font-feature-settings: "tnum";
+      transition: opacity 0.1s;
+      line-height: 1;
+    }
+
     .tz-biz {
       display: flex;
       align-items: center;
@@ -693,16 +687,18 @@
 
     .tz-flag {
       position: absolute;
-      right: clamp(14px, 2vw, 30px);
-      top: clamp(14px, 1.8vh, 28px);
-      height: clamp(18px, 3vw, 48px);
+      right: 0;
+      top: 0;
+      height: 100%;
       width: auto;
-      border-radius: 3px;
-      opacity: 0.6;
-      filter: saturate(0.75) brightness(0.9);
+      max-width: 55%;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      opacity: 0.3;
+      filter: saturate(0.65) brightness(0.85);
       z-index: 1;
       pointer-events: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.55);
+      object-fit: cover;
+      object-position: center;
     }
 
   </style>
@@ -1263,13 +1259,15 @@ function initDisplay(raw) {
       <div class="tz-label">${esc(item.l)}</div>
       <div class="tz-time-row">
         <span class="t-main" data-tz="${esc(tz)}" data-p="hm"></span>
-        <span class="t-sec"  data-tz="${esc(tz)}" data-p="s"></span>
-        <span class="t-ampm" data-tz="${esc(tz)}" data-p="ampm"></span>
       </div>
       <div class="tz-bottom">
         <span class="tz-offset" data-tz="${esc(tz)}" data-p="offset"></span>
+        <span class="tz-sep">·</span>
+        <span class="t-ampm" data-tz="${esc(tz)}" data-p="ampm"></span>
+        <span class="tz-sep">·</span>
+        <span class="t-sec"  data-tz="${esc(tz)}" data-p="s"></span>
       </div>
-      ${cc ? `<img class="tz-flag" src="https://flagcdn.com/w160/${cc}.png" alt="" onerror="this.style.display='none'">` : ''}
+      ${cc ? `<img class="tz-flag" src="https://flagcdn.com/w320/${cc}.png" alt="" onerror="this.style.display='none'">` : ''}
     `;
     grid.appendChild(card);
   });
